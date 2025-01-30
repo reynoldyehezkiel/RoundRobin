@@ -49,5 +49,10 @@ c.execute("desc players")
 for i in c:
 	print(i)
 
+c.execute("desc matches")
+# print the table details
+for i in c:
+	print(i)
+
 # finally closing the database connection
 db.close()
