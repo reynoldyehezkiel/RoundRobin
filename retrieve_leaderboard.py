@@ -1,7 +1,8 @@
 from singleton import connect_database as connector
-from singleton import retrieve_players as players
+from singleton import get_players
 
-if not players.data:
+players_data = get_players.data
+if not players_data:
     print("\nNo players available. Please add players first.")
 else:
     # print all the data returned by the database
@@ -11,8 +12,8 @@ else:
 
     # Print the rank, player name, and number of wins in aligned format
     rank = 1
-    for name,total_win in players.data:
-        print(f"{rank:<6}{name:<21} {str(total_win)+' wins':>5}")
+    for id, name, total_win in players_data:
+        print(f"{rank:<6}{name:<21} {str(total_win)}")
         rank += 1
 
 # finally closing the database connection

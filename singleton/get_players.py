@@ -3,7 +3,7 @@ from singleton import connect_database as connector
 c = connector.db.cursor()
 
 query = """
-    SELECT name, total_win FROM PLAYERS
+    SELECT id, name, total_win FROM PLAYERS
     ORDER BY total_win DESC;
 """
 
