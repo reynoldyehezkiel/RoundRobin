@@ -26,16 +26,19 @@ c.execute(players_select)
 # fetch all the data returned by the database
 employee_data = c.fetchall()
 
-# print all the data returned by the database
-print("\n----------- Leaderboard -----------")
-print(f"{'Rank':<5} {'Player':<20} {'Wins':>5}")
-print("-" * 35)  # Separator line
+if not employee_data:
+    print("\nNo players data. Add some players first.")
+else:
+    # print all the data returned by the database
+    print("\n----------- Leaderboard -----------")
+    print(f"{'Rank':<5} {'Player':<20} {'Wins':>5}")
+    print("-" * 35)
 
-rank = 1
-for name,total_win in employee_data:
     # Print the rank, player name, and number of wins in aligned format
-    print(f"{rank:<6}{name:<21} {str(total_win)+' wins':>5}")
-    rank += 1
+    rank = 1
+    for name,total_win in employee_data:
+        print(f"{rank:<6}{name:<21} {str(total_win)+' wins':>5}")
+        rank += 1
 
 # finally closing the database connection
 db.close()
