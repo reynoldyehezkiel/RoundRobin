@@ -7,3 +7,5 @@ db = mysql.connector.connect(
 	passwd="",
 	database="roundrobin"
 )
+
+c = db.cursor()

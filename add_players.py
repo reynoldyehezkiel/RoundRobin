@@ -1,10 +1,6 @@
-import connect_database as connector
-
-# cursor object c
-c = connector.db.cursor()
+from singleton import connect_database as connector
 
 # insert statement for players
-# this statement will enable us to insert multiple rows at once.
 players_insert = """
     INSERT INTO players
         (name)
@@ -38,7 +34,7 @@ while True:
 players_data = zip(*[iter(players_data)]*1)
 
 # execute the insert commands for all rows and commit to the database
-c.executemany(players_insert, players_data)
+connector.c.executemany(players_insert, players_data)
 connector.db.commit()
 
 # finally closing the database connection

@@ -1,7 +1,4 @@
-import connect_database as connector
-
-# cursor object c
-c = connector.db.cursor()
+from singleton import connect_database as connector
 
 # create statement for players
 players_create = """
@@ -28,21 +25,15 @@ matches_create = """
 	)
 """
 
-c.execute(players_create)
-c.execute(matches_create)
-
-c = connector.db.cursor()
-
-# fetch tblemployee details in the database
-c.execute("desc players")
+connector.c.execute(players_create)
+connector.c.execute(matches_create)
 
 # print the table details
-for i in c:
+connector.c.execute("desc players")
+for i in connector.c:
 	print(i)
-
-c.execute("desc matches")
-# print the table details
-for i in c:
+connector.c.execute("desc matches")
+for i in connector.c:
 	print(i)
 
 # finally closing the database connection
