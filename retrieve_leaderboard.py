@@ -27,7 +27,7 @@ c.execute(players_select)
 employee_data = c.fetchall()
 
 if not employee_data:
-    print("\nNo players data. Add some players first.")
+    print("\nNo players available. Please add players first.")
 else:
     # print all the data returned by the database
     print("\n----------- Leaderboard -----------")
