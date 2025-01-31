@@ -1,16 +1,7 @@
-# Python implementation to create a Database in MySQL
-import mysql.connector
-
-# connecting to the mysql server
-db = mysql.connector.connect(
-	host="localhost",
-	user="root",
-	passwd="",
-	database="roundrobin"
-)
+import connect_database as connector
 
 # cursor object c
-c = db.cursor()
+c = connector.db.cursor()
 
 # create statement for players
 players_create = """
@@ -40,7 +31,7 @@ matches_create = """
 c.execute(players_create)
 c.execute(matches_create)
 
-c = db.cursor()
+c = connector.db.cursor()
 
 # fetch tblemployee details in the database
 c.execute("desc players")
@@ -55,4 +46,4 @@ for i in c:
 	print(i)
 
 # finally closing the database connection
-db.close()
+connector.db.close()

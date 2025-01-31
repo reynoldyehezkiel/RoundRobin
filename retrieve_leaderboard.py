@@ -1,18 +1,7 @@
-# Python implementation to fetch data from a table in MySQL
-from xml.etree.ElementTree import tostring
-
-import mysql.connector
-
-# connecting to the mysql server
-db = mysql.connector.connect(
-	host="localhost",
-	user="root",
-	passwd="",
-	database="roundrobin"
-)
+import connect_database as connector
 
 # cursor object c
-c = db.cursor()
+c = connector.db.cursor()
 
 # select statement for tblemployee which returns all columns
 players_select = """
@@ -41,4 +30,4 @@ else:
         rank += 1
 
 # finally closing the database connection
-db.close()
+connector.db.close()

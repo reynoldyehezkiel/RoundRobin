@@ -1,16 +1,7 @@
-# Python implementation to insert data into a table in MySQL
-import mysql.connector
-
-# connecting to the mysql server
-db = mysql.connector.connect(
-	host="localhost",
-	user="root",
-	passwd="",
-	database="roundrobin"
-)
+import connect_database as connector
 
 # cursor object c
-c = db.cursor()
+c = connector.db.cursor()
 
 # insert statement for players
 # this statement will enable us to insert multiple rows at once.
@@ -48,7 +39,7 @@ players_data = zip(*[iter(players_data)]*1)
 
 # execute the insert commands for all rows and commit to the database
 c.executemany(players_insert, players_data)
-db.commit()
+connector.db.commit()
 
 # finally closing the database connection
-db.close()
+connector.db.close()
