@@ -1,5 +1,5 @@
 from singleton import connect_database as connector
-from singleton import get_players
+from singleton import players_query
 
 players_data = get_players.data
 if not players_data:
