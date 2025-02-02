@@ -7,8 +7,12 @@ query_all = """
     ORDER BY total_win DESC;
 """
 
-# execute the select query to fetch all rows
-connector.c.execute(query_all)
+query_insert = """
+    INSERT INTO players
+        (name)
+    VALUES
+        (%s)
+"""
 
-# fetch all the data returned by the database
+connector.c.execute(query_all)
 get_all_data = connector.c.fetchall()

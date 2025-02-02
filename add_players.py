@@ -1,12 +1,5 @@
 from singleton import connect_database as connector
-
-# insert statement for players
-players_insert = """
-    INSERT INTO players
-        (name)
-    VALUES
-        (%s)
-"""
+from singleton import players
 
 # we save all the row data to be inserted in a data variable
 players_data = []
@@ -34,7 +27,7 @@ while True:
 players_data = zip(*[iter(players_data)]*1)
 
 # execute the insert commands for all rows and commit to the database
-connector.c.executemany(players_insert, players_data)
+connector.c.executemany(players.query_insert, players_data)
 connector.db.commit()
 
 # finally closing the database connection

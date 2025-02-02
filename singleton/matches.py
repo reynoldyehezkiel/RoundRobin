@@ -19,9 +19,22 @@ query_remain = """
     WHERE m.winner_id IS NULL;
 """
 
-query_winner = """
+query_insert = """
+    INSERT INTO matches
+        (player1_id, player2_id)
+    VALUES
+        (%s, %s)
+"""
+
+set_winner = """
     UPDATE matches
     SET winner_id = %s
+    WHERE id = %s
+"""
+
+set_total_win = """
+    UPDATE players
+    SET total_win = total_win + 1
     WHERE id = %s
 """
 

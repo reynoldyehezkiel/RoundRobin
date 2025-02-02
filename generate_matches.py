@@ -4,14 +4,6 @@ from singleton import connect_database as connector
 from singleton import players
 from singleton import matches
 
-# insert statement for matches
-matches_insert = """
-    INSERT INTO matches
-        (player1_id, player2_id)
-    VALUES
-        (%s, %s)
-"""
-
 players_data = players.get_all_data
 if not players_data:
     print("\nNo players available. Please add players first.")
@@ -48,7 +40,7 @@ else:
     # Add new matches
     if new_matches:
         # execute the insert commands for all rows and commit to the database
-        connector.c.executemany(matches_insert, new_matches)
+        connector.c.executemany(matches.query_insert, new_matches)
         connector.db.commit()
         print("\n--- Generating New Matches ---")
         print(f"{len(new_matches)} new matches generated and added to the database!")

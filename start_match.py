@@ -2,20 +2,6 @@ from singleton import connect_database as connector
 from singleton import players
 from singleton import matches
 
-# set match winner
-set_match = """
-    UPDATE matches
-    SET winner_id = %s
-    WHERE id = %s
-"""
-
-# score +1 for winner
-set_total_win = """
-    UPDATE players
-    SET total_win = total_win + 1
-    WHERE id = %s
-"""
-
 # remaining match data if winner_id null
 remain_matches = matches.get_remain_data
 
@@ -36,14 +22,14 @@ else:
         while True:
             winner_choice = input(f"Enter your choice (1 for {player1_name} / 2 for {player2_name}): ").strip()
             if winner_choice == "1":
-                connector.c.execute(set_match, (player1_id, match_id))
-                connector.c.execute(set_total_win, (player1_id,))
+                connector.c.execute(matches.set_winner, (player1_id, match_id))
+                connector.c.execute(matches.set_total_win, (player1_id,))
                 print(f"\n✅ Winner recorded: {player1_name}!")
                 break
 
             elif winner_choice == "2":
-                connector.c.execute(set_match, (player2_id, match_id))
-                connector.c.execute(set_total_win, (player2_id,))
+                connector.c.execute(matches.set_winner, (player2_id, match_id))
+                connector.c.execute(matches.set_total_win, (player2_id,))
                 print(f"\n✅ Winner recorded: {player2_name}!")
                 break
 
