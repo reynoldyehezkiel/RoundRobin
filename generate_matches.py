@@ -1,8 +1,8 @@
 from itertools import combinations
 
 from singleton import connect_database as connector
-from singleton import players_query
-from singleton import matches_query
+from singleton import players
+from singleton import matches
 
 # insert statement for matches
 matches_insert = """
@@ -12,12 +12,12 @@ matches_insert = """
         (%s, %s)
 """
 
-players_data = players_query.data
+players_data = players.get_all_data
 if not players_data:
     print("\nNo players available. Please add players first.")
 else:
     # Get all existing matches
-    matches_data = matches_query.all_data
+    matches_data = matches.get_all_data
 
     # Separate existing match data to player 1 id and player 2 id
     player1_data = list(zip(*matches_data))[1]

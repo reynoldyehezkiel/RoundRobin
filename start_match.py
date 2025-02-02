@@ -1,6 +1,6 @@
 from singleton import connect_database as connector
-from singleton import players_query
-from singleton import matches_query
+from singleton import players
+from singleton import matches
 
 # update statement for matches
 matches_update = """
@@ -10,10 +10,7 @@ matches_update = """
 """
 
 # remaining match data if winner_id null
-remain_matches = matches_query.remain_data
-
-
-# print(remain_matches, end='\n')
+remain_matches = matches.get_remain_data
 
 if not remain_matches:
     print("\nNo matches available. Generate new matches first.")

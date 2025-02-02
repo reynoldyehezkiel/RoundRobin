@@ -1,7 +1,7 @@
 from singleton import connect_database as connector
-from singleton import players_query
+from singleton import players
 
-players_data = get_players.data
+players_data = players.get_all_data
 if not players_data:
     print("\nNo players available. Please add players first.")
 else:

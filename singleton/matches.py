@@ -19,8 +19,14 @@ query_remain = """
     WHERE m.winner_id IS NULL;
 """
 
+query_winner = """
+    UPDATE matches
+    SET winner_id = %s
+    WHERE id = %s
+"""
+
 connector.c.execute(query_all)
-all_data = connector.c.fetchall()
+get_all_data = connector.c.fetchall()
 
 connector.c.execute(query_remain)
-remain_data = connector.c.fetchall()
+get_remain_data = connector.c.fetchall()
