@@ -7,7 +7,7 @@ remain_matches = matches.get_remain_data
 
 # get list of player id to update total_win
 players_data = players.get_all_data
-players_id = matches.update_total_win(players_data)
+data_players_id = matches.update_total_win(players_data)
 
 if not remain_matches:
     print("\nNo matches available. Generate new matches first.")
@@ -42,7 +42,7 @@ else:
             else:
                 print("\n❌ Invalid choice! Please enter '1' or '2' to record a winner or leave blank to skip.")
 
-connector.c.executemany(matches.set_total_win, players_id)
+connector.c.executemany(matches.set_total_win, data_players_id)
 connector.db.commit()
 print(f"\n✅ All matches recorded")
 

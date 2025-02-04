@@ -14,18 +14,18 @@ print("Type 'done' when you are finished adding players.\n")
 
 while True:
     # Asking for player name with instructions
-    player_name = input("Enter a player name: ").strip()
+    name_input = input("Enter a player name: ").strip()
 
-    if player_name.lower() == "done":
+    if name_input.lower() == "done":
         print("\n✅ Finished adding players.")
         break
 
-    if player_name in existing_players:
-        print(f"\n⚠️ Player '{player_name}' already exists! Please choose a different name.\n")
-    elif player_name == "":
+    if name_input in existing_players:
+        print(f"\n⚠️ Player '{name_input}' already exists! Please choose a different name.\n")
+    elif name_input == "":
         print("\n⚠️ Player name cannot be empty. Please try again.\n")
     else:
-        new_players.append(player_name)
+        new_players.append(name_input)
         
         # convert list to list of tuples
         players_data = zip(*[iter(new_players)]*1)
