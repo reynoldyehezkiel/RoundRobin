@@ -23,12 +23,12 @@ while True:
         print("\n⚠️ Player name cannot be empty. Please try again.\n")
     else:
         new_players.append(player_name)
-
+        
         # convert list to list of tuples
-        new_players = zip(*[iter(new_players)]*1)
+        players_data = zip(*[iter(new_players)]*1)
 
         # execute the insert commands for all rows and commit to the database
-        connector.c.executemany(players.query_insert, new_players)
+        connector.c.executemany(players.query_insert, players_data)
         connector.db.commit()
 
 # finally closing the database connection
