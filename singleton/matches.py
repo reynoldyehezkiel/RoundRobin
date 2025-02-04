@@ -1,5 +1,13 @@
 from singleton import connect_database as connector
 
+def update_total_win(players_data):
+    player_id = list(zip(*players_data))[0]
+    result = []
+    for i in range(0, len(player_id)):
+        player_id_list = (player_id[i], player_id[i])
+        result.append(player_id_list)
+    return result
+
 c = connector.db.cursor()
 
 query_all = """
@@ -41,9 +49,6 @@ set_total_win = """
     )
     WHERE id = %s;
 """
-# UPDATE players
-# SET total_win = total_win + 1
-# WHERE id = %s
 
 connector.c.execute(query_all)
 get_all_data = connector.c.fetchall()

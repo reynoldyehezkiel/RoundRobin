@@ -7,11 +7,7 @@ remain_matches = matches.get_remain_data
 
 # get list of player id to update total_win
 players_data = players.get_all_data
-player_id = list(zip(*players_data))[0]
-players_id = []
-for i in range(0, len(player_id)):
-    match_list = (player_id[i], player_id[i])
-    players_id.append(match_list)
+players_id = matches.update_total_win(players_data)
 
 if not remain_matches:
     print("\nNo matches available. Generate new matches first.")
@@ -31,13 +27,11 @@ else:
             winner_choice = input(f"Enter your choice (1 for {player1_name} / 2 for {player2_name}): ").strip()
             if winner_choice == "1":
                 connector.c.execute(matches.set_winner, (player1_id, match_id))
-                # connector.c.execute(matches.set_total_win, (player1_id,))
                 print(f"\n✅ Winner: {player1_name}!")
                 break
 
             elif winner_choice == "2":
                 connector.c.execute(matches.set_winner, (player2_id, match_id))
-                # connector.c.execute(matches.set_total_win, (player2_id,))
                 print(f"\n✅ Winner: {player2_name}!")
                 break
 
