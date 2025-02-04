@@ -5,6 +5,9 @@ from singleton import matches
 # remaining match data if winner_id null
 remain_matches = matches.get_remain_data
 
+players_data = players.get_all_data
+players_id = list(zip(*players_data))[0]
+
 if not remain_matches:
     print("\nNo matches available. Generate new matches first.")
 else:
@@ -40,6 +43,7 @@ else:
             else:
                 print("\n❌ Invalid choice! Please enter '1' or '2' to record a winner or leave blank to skip.")
 
+connector.c.execute(matches.set_total_win, players_id)
 connector.db.commit()
 
 # finally closing the database connection

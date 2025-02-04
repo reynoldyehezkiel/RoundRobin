@@ -34,9 +34,15 @@ set_winner = """
 
 set_total_win = """
     UPDATE players
-    SET total_win = total_win + 1
-    WHERE id = %s
+    SET total_win = (
+      SELECT COUNT(*)
+      FROM matches
+      WHERE winner_id = %s
+    );
 """
+# UPDATE players
+# SET total_win = total_win + 1
+# WHERE id = %s
 
 connector.c.execute(query_all)
 get_all_data = connector.c.fetchall()
