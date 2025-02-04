@@ -14,5 +14,9 @@ query_insert = """
         (%s)
 """
 
+query_delete = """
+    DELETE FROM players WHERE id=%s
+"""
+
 connector.c.execute(query_all)
 get_all_data = connector.c.fetchall()
