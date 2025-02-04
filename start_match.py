@@ -6,7 +6,14 @@ from singleton import matches
 remain_matches = matches.get_remain_data
 
 players_data = players.get_all_data
-players_id = list(zip(*players_data))[0]
+player_id = list(zip(*players_data))[0]
+# players_id = zip(*[iter(player_id)]*1)
+# players_id = [(pid,) for pid in player_id]
+players_id = []
+for i in range(0, len(player_id)):
+    match_list = (player_id[i], player_id[i])
+    players_id.append(match_list)
+print(players_id)
 
 if not remain_matches:
     print("\nNo matches available. Generate new matches first.")
@@ -26,13 +33,13 @@ else:
             winner_choice = input(f"Enter your choice (1 for {player1_name} / 2 for {player2_name}): ").strip()
             if winner_choice == "1":
                 connector.c.execute(matches.set_winner, (player1_id, match_id))
-                connector.c.execute(matches.set_total_win, (player1_id,))
+                # connector.c.execute(matches.set_total_win, (player1_id,))
                 print(f"\n✅ Winner recorded: {player1_name}!")
                 break
 
             elif winner_choice == "2":
                 connector.c.execute(matches.set_winner, (player2_id, match_id))
-                connector.c.execute(matches.set_total_win, (player2_id,))
+                # connector.c.execute(matches.set_total_win, (player2_id,))
                 print(f"\n✅ Winner recorded: {player2_name}!")
                 break
 
@@ -43,8 +50,9 @@ else:
             else:
                 print("\n❌ Invalid choice! Please enter '1' or '2' to record a winner or leave blank to skip.")
 
-connector.c.execute(matches.set_total_win, players_id)
+connector.c.executemany(matches.set_total_win, players_id)
 connector.db.commit()
+print(f"\n✅ All matches recorded")
 
 # finally closing the database connection
 connector.db.close()

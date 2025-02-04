@@ -38,7 +38,8 @@ set_total_win = """
       SELECT COUNT(*)
       FROM matches
       WHERE winner_id = %s
-    );
+    )
+    WHERE id = %s;
 """
 # UPDATE players
 # SET total_win = total_win + 1
