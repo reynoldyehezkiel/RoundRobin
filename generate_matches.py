@@ -15,13 +15,12 @@ else:
     if not matches_data:
         existing_matches = set()
     else:
-        existing_matches = matches.get_all_data
         # Separate existing match data to player 1 id and player 2 id
-        player1_data = list(zip(*existing_matches))[1]
-        player2_data = list(zip(*existing_matches))[2]
+        player1_data = list(zip(*matches_data))[1]
+        player2_data = list(zip(*matches_data))[2]
 
-        # Reconstruct existing match data to "(player1_id, player2_id)"
         existing_matches = []
+        # Reconstruct existing match data to "(player1_id, player2_id)"
         for i in range(0, len(matches_data)):
             match_list = (player1_data[i], player2_data[i])
             existing_matches.append(match_list)
