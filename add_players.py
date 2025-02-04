@@ -2,8 +2,11 @@ from singleton import connect_database as connector
 from singleton import players
 
 new_players = []
+players_data = []
+
 existing_players = players.get_all_data
-existing_players = list(zip(*existing_players))[1]
+if existing_players:
+    existing_players = list(zip(*existing_players))[1]
 
 print("\n--- Add New Players ---")
 print("Please enter player names one by one.")
@@ -27,9 +30,9 @@ while True:
         # convert list to list of tuples
         players_data = zip(*[iter(new_players)]*1)
 
-        # execute the insert commands for all rows and commit to the database
-        connector.c.executemany(players.query_insert, players_data)
-        connector.db.commit()
+# execute the insert commands for all rows and commit to the database
+connector.c.executemany(players.query_insert, players_data)
+connector.db.commit()
 
 # finally closing the database connection
 connector.db.close()
