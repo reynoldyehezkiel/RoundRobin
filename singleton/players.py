@@ -27,7 +27,8 @@ get_leaderboard = connector.c.fetchall()
 query_by_remaining_matches = """
     SELECT p.id, p.name, p.total_win
     FROM players p
-    LEFT JOIN matches m ON p.id = m.player1_id
+    LEFT JOIN matches m
+    ON p.id = m.player1_id OR p.id = m.player2_id
     WHERE m.winner_id IS NULL
     GROUP BY p.id;
 """
