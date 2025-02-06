@@ -19,9 +19,9 @@ get_all_data = connector.c.fetchall()
 
 query_by_win = """
     SELECT id, name, total_win FROM PLAYERS
-    ORDER BY total_win;
+    ORDER BY total_win DESC;
 """
-connector.c.execute(query_all)
+connector.c.execute(query_by_win)
 get_leaderboard = connector.c.fetchall()
 
 query_by_remaining_matches = """
