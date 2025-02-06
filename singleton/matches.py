@@ -13,6 +13,8 @@ c = connector.db.cursor()
 query_all = """
     SELECT * FROM MATCHES;
 """
+connector.c.execute(query_all)
+get_all_data = connector.c.fetchall()
 
 query_remain = """
     SELECT
@@ -26,6 +28,8 @@ query_remain = """
     LEFT JOIN players p_win ON m.winner_id = p_win.id
     WHERE m.winner_id IS NULL;
 """
+connector.c.execute(query_remain)
+get_remain_data = connector.c.fetchall()
 
 query_insert = """
     INSERT INTO matches
@@ -49,9 +53,3 @@ set_total_win = """
     )
     WHERE id = %s;
 """
-
-connector.c.execute(query_all)
-get_all_data = connector.c.fetchall()
-
-connector.c.execute(query_remain)
-get_remain_data = connector.c.fetchall()

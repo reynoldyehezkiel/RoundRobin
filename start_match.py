@@ -30,7 +30,7 @@ def match_players(match_data, p1_id, p1_name, p2_id, p2_name):
 remain_matches = matches.get_remain_data
 
 # get list of player id to update total_win
-players_data = players.get_all_data
+players_data = players.get_by_remaining_match
 data_players_id = matches.update_total_win(players_data)
 
 if not remain_matches:
@@ -53,7 +53,7 @@ else:
 
     elif menu_input == 2:
         # print all players data
-        players.print_all_data()
+        players.print_data(players_data)
         id_input = int(input("\nChoose player to start match: "))
 
         for match in remain_matches:
@@ -63,9 +63,9 @@ else:
             player1_name = match[2]
             player2_name = match[4]
 
-            if match[3] == id_input or match[1] == id_input:
+            if player1_id == id_input or player2_id == id_input:
                 match_players(remain_matches, player1_id, player1_name, player2_id, player2_name)
-       
+
     else:
         print("\n❌ Invalid choice!")
 

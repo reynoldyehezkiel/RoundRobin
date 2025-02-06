@@ -2,18 +2,29 @@ from singleton import connect_database as connector
 
 c = connector.db.cursor()
 
-def print_all_data():
+def print_data(data):
     print("-" * 20)
     print(f"{'ID':<3} {'Player':<20}")
     print("-" * 20)
 
-    for pid, name, total_win in get_all_data:
+    for pid, name in data:
         print(f"{pid:<4}{name:<21}")
 
 query_all = """
     SELECT id, name, total_win FROM PLAYERS
     ORDER BY total_win DESC;
 """
+connector.c.execute(query_all)
+get_all_data = connector.c.fetchall()
+
+query_by_remaining_matches = """
+    SELECT p.id, p.name
+    FROM players p
+    LEFT JOIN matches m ON p.id = m.player1_id
+    WHERE m.winner_id IS NULL;
+"""
+connector.c.execute(query_by_remaining_matches)
+get_by_remaining_match = connector.c.fetchall()
 
 query_insert = """
     INSERT INTO players
@@ -26,5 +37,3 @@ query_delete = """
     DELETE FROM players WHERE id=%s
 """
 
-connector.c.execute(query_all)
-get_all_data = connector.c.fetchall()
