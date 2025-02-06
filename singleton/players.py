@@ -7,18 +7,18 @@ def print_data(data):
     print(f"{'ID':<3} {'Player':<20}")
     print("-" * 20)
 
-    for pid, name in data:
+    for pid, name, total_win in data:
         print(f"{pid:<4}{name:<21}")
+    print("-" * 20)
 
 query_all = """
-    SELECT id, name, total_win FROM PLAYERS
-    ORDER BY total_win DESC;
+    SELECT id, name, total_win FROM PLAYERS;
 """
 connector.c.execute(query_all)
 get_all_data = connector.c.fetchall()
 
 query_by_remaining_matches = """
-    SELECT p.id, p.name
+    SELECT p.id, p.name, p.total_win
     FROM players p
     LEFT JOIN matches m ON p.id = m.player1_id
     WHERE m.winner_id IS NULL;

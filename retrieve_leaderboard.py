@@ -15,6 +15,7 @@ else:
     for pid, name, total_win in players_data:
         print(f"{rank:<6}{name:<21} {str(total_win)}")
         rank += 1
+    print("-" * 35)
 
 # finally closing the database connection
 connector.db.close()
