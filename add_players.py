@@ -1,5 +1,5 @@
-from singleton import connect_database as connector
-from singleton import players
+from query import connect_database as connector
+from query import players
 
 new_players = []
 players_data = []

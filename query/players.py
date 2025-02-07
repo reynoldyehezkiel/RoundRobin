@@ -1,4 +1,4 @@
-from singleton import connect_database as connector
+from query import connect_database as connector
 
 c = connector.db.cursor()
 

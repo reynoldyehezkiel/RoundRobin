@@ -1,4 +1,4 @@
-from singleton import connect_database as connector
+from query import connect_database as connector
 
 def update_total_win(players_data):
     player_id = list(zip(*players_data))[0]

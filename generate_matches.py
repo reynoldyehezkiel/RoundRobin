@@ -1,8 +1,8 @@
 from itertools import combinations
 
-from singleton import connect_database as connector
-from singleton import players
-from singleton import matches
+from query import connect_database as connector
+from query import players
+from query import matches
 
 players_data = players.get_all_data
 if not players_data:

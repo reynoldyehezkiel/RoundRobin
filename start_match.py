@@ -1,6 +1,6 @@
-from singleton import connect_database as connector
-from singleton import players
-from singleton import matches
+from query import connect_database as connector
+from query import players
+from query import matches
 
 def match_players(match_data, p1_id, p1_name, p2_id, p2_name):
     print(f"\nMatch: {player1_name} vs {player2_name}")
