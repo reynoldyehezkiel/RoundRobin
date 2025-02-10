@@ -39,7 +39,8 @@ query_by_remaining_matches = """
     LEFT JOIN matches m
     ON p.id = m.player1_id OR p.id = m.player2_id
     WHERE m.winner_id IS NULL
-    GROUP BY p.id;
+    GROUP BY p.id
+    ORDER BY p.id DESC;
 """
 connector.c.execute(query_by_remaining_matches)
 get_by_remaining_match = connector.c.fetchall()
