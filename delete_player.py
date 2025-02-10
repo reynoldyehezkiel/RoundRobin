@@ -8,15 +8,13 @@ players_data = players.get_all_data
 # Get id player
 player_id = list(zip(*players_data))[0]
 
-############## Add feature cancel delete ##############
-
 while True:
 
     print("Type player ID to delete")
     print("⚠️ Type 0 to cancel\n")
 
     # Print all players data
-    players.print_data(players_data)
+    players.print_players(players_data)
     id_input = int(input("\nChoose player: "))
 
     if id_input == 0:
