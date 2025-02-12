@@ -1,31 +1,38 @@
 from query import connect_database as connector
-from query import players
-from query import matches
+from query.player import *
+from query.match import *
 
 def add_players():
     new_players = []
     players_data = []
 
-    existing_players = players.get_all_data
+    existing_players = get_all_player_data
     if existing_players:
         existing_players = list(zip(*existing_players))[1]
 
     print("\n--- Add New Players ---")
     print("Please enter player names one by one.")
-    print("Type 'done' when you are finished adding players.\n")
+    print("⚠️ Type 'done' when you are finished adding players.\n")
 
     while True:
         # Asking for player name with instructions
         name_input = input("Enter a player name: ").strip()
 
-        if name_input.lower() == "done":
-            print("\n✅ Finished adding players.")
-            break
+        # if name_input.lower() == "done":
+        #     print("\n✅ Finished adding players.")
+        #     break
 
         if name_input in existing_players:
             print(f"\n⚠️ Player '{name_input}' already exists! Please choose a different name.\n")
         elif name_input == "":
             print("\n⚠️ Player name cannot be empty. Please try again.\n")
+        elif name_input.lower() == "done":
+            if new_players:
+                print("\n✅ Finished adding players.")
+                break
+            else:
+                print("\n⚠️ No players added.")
+                break
         else:
             new_players.append(name_input)
 
@@ -33,14 +40,14 @@ def add_players():
             players_data = zip(*[iter(new_players)]*1)
 
     # execute the insert commands for all rows and commit to the database
-    connector.c.executemany(players.query_insert, players_data)
+    connector.c.executemany(query_insert_player, players_data)
     connector.db.commit()
 
     # finally closing the database connection
     connector.db.close()
 
 def retrieve_leaderboard():
-    players_data = players.get_leaderboard
+    players_data = get_leaderboard
     if not players_data:
         print("\nNo players available. Please add players first.")
     else:
@@ -65,19 +72,19 @@ def retrieve_leaderboard():
 
 def delete_player():
     # Get all players name
-    players_data = players.get_all_data
+    players_data = get_all_player_data
 
     # Get id player
     player_id = list(zip(*players_data))[0]
 
     while True:
 
-        print("\nType player ID to delete")
-        print("⚠️ Type 0 to cancel\n")
+        print("\n=== Delete Player ===")
 
         # Print all players data
-        players.print_players(players_data)
-        id_input = int(input("\nChoose player: "))
+        print_players(players_data)
+        print("⚠️ Type 0 to cancel\n")
+        id_input = int(input("\nChoose player to delete: "))
 
         if id_input == 0:
             print(f"\nDelete player is cancel. No players are deleted.")
@@ -92,10 +99,10 @@ def delete_player():
                     player_name = players_data[i][1]
 
             # update total win
-            data_total_win = matches.update_total_win(players_data)
+            data_total_win = update_total_win(players_data)
 
-            # connector.c.execute(players.query_delete, (id_input,))
-            # connector.c.executemany(matches.set_total_win, data_total_win)
+            connector.c.execute(query_delete_player, (id_input,))
+            connector.c.executemany(set_total_win, data_total_win)
             connector.db.commit()
             print(f"\n✅ Player '{player_name}' deleted successfully!")
 
