@@ -44,13 +44,13 @@ def generate_matches():
             connector.cur.executemany(query_insert_match, new_matches)
             connector.commit()
 
-            print("\n--- Generating New Matches ---")
+            print("\n=== Generating New Matches ===")
             print(f"{len(new_matches)} new matches generated and added to the database!")
         else:
             print("⚠️ No new matches to generate (matches already exist).")
 
     # close database
-    connector.close()
+    # connector.close()
 
 def start_match():
     # remaining match data if winner_id null
@@ -114,7 +114,7 @@ def start_match():
         print(f"\n✅ All matches recorded")
 
     # close database
-    connector.close()
+    # connector.close()
 
 def rematch():
     # get data finished matches and player
@@ -186,7 +186,7 @@ def rematch():
             print(f"\n✅ All matches recorded")
 
             # close database
-            connector.close()
+            # connector.close()
             break
 
 def match_players(m_id, p1_id, p1_name, p2_id, p2_name):

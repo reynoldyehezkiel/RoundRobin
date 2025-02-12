@@ -1,7 +1,6 @@
-from query import connection as connector
-
 from app.player import *
 from app.match import *
+from query.connection import *
 
 def main_menu():
     while True:
@@ -12,7 +11,6 @@ def main_menu():
         print("4. Rematch")
         print("5. Delete Player")
         print("6. Rename Player (Coming Soon)")
-        print("7. Manually Generate Matches")
         print("0. Exit")
         choice = input("Select an option: ").strip()
 
@@ -30,9 +28,9 @@ def main_menu():
         elif choice == "6":
             # rename_player()
             print("⚠️ This feature is unavailable for now. Coming Soon!")
-        elif choice == "7":
-            generate_matches()
         elif choice == "0":
+            print("Closing database...")
+            connector.close()
             print("Goodbye!")
             break
         else:

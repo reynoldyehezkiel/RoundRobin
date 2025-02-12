@@ -2,6 +2,7 @@ from app.match import *
 from query.player import *
 from query.match import *
 
+
 def add_players():
     temp_players = []
     new_players = []
@@ -42,7 +43,7 @@ def add_players():
             new_players = zip(*[iter(temp_players)]*1)
 
     # close database
-    connector.close()
+    # connector.close()
 
 def retrieve_leaderboard():
     players_data = get_leaderboard()
@@ -64,7 +65,7 @@ def retrieve_leaderboard():
         print("-" * 31)
 
     # close database
-    connector.close()
+    # connector.close()
 
 # def rename_player():
 
@@ -106,7 +107,7 @@ def delete_player():
             print(f"\n✅ Player '{player_name}' deleted successfully!")
 
             # close database
-            connector.close()
+            # connector.close()
             break
 
 def print_players(data):
