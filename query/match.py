@@ -1,40 +1,5 @@
 from query import connect_database as connector
 
-def match_players(m_id, p1_id, p1_name, p2_id, p2_name):
-    print(f"\nMatch: {p1_name} vs {p2_name}")
-    print("Please enter '1' for player 1 or '2' for player 2.")
-    print("Leave blank and press Enter to skip the match.\n")
-
-    while True:
-        winner_choice = input(f"Enter your choice (1 for {p1_name} / 2 for {p2_name}): ").strip()
-        if winner_choice == "1":
-            connector.c.execute(set_winner, (p1_id, m_id))
-            print(f"\n✅ Winner: {p1_name}!")
-            break
-
-        elif winner_choice == "2":
-            connector.c.execute(set_winner, (p2_id, m_id))
-            print(f"\n✅ Winner: {p2_name}!")
-            break
-
-        elif winner_choice == "":
-            print(f"\n⚠️ Match between {p1_name} and {p2_name} skipped.")
-            break
-
-        else:
-            print("\n❌ Invalid choice! Please enter '1' or '2' to record a winner or leave blank to skip.")
-
-
-def update_total_win(players_data):
-    player_id = list(zip(*players_data))[0]
-    result = []
-    for i in range(0, len(player_id)):
-        player_id_list = (player_id[i], player_id[i])
-        result.append(player_id_list)
-    return result
-
-c = connector.db.cursor()
-
 # All Matches
 query_all = """
     SELECT * FROM MATCHES;
