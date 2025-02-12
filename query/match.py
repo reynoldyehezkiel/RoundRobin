@@ -40,7 +40,7 @@ query_all = """
     SELECT * FROM MATCHES;
 """
 connector.c.execute(query_all)
-get_all_data = connector.c.fetchall()
+get_all_matches_data = connector.c.fetchall()
 
 # All remain matches
 query_remain = """
@@ -58,7 +58,7 @@ query_remain = """
     ORDER BY player1_total_win DESC;
 """
 connector.c.execute(query_remain)
-get_remain_data = connector.c.fetchall()
+get_remain_matches_data = connector.c.fetchall()
 
 # All finished matches
 query_finished = """
@@ -74,10 +74,10 @@ query_finished = """
     WHERE winner_id IS NOT NULL;
 """
 connector.c.execute(query_finished)
-get_finished_data = connector.c.fetchall()
+get_finished_matches_data = connector.c.fetchall()
 
 # Insert matches data
-query_insert = """
+query_insert_match = """
     INSERT INTO matches
         (player1_id, player2_id)
     VALUES

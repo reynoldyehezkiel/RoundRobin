@@ -24,7 +24,7 @@ query_all = """
     SELECT id, name FROM PLAYERS;
 """
 connector.c.execute(query_all)
-get_all_data = connector.c.fetchall()
+get_all_player_data = connector.c.fetchall()
 
 query_by_win = """
     SELECT id, name, total_win FROM PLAYERS
@@ -42,7 +42,7 @@ query_by_remaining_matches = """
     GROUP BY p.id;
 """
 connector.c.execute(query_by_remaining_matches)
-get_by_remaining_match = connector.c.fetchall()
+get_player_by_remaining_match = connector.c.fetchall()
 
 query_by_finished_matches = """
     SELECT p.id, p.name
@@ -54,16 +54,16 @@ query_by_finished_matches = """
     ORDER BY p.id;
 """
 connector.c.execute(query_by_finished_matches)
-get_by_finished_match = connector.c.fetchall()
+get_player_by_finished_match = connector.c.fetchall()
 
-query_insert = """
+query_insert_player = """
     INSERT INTO players
         (name)
     VALUES
         (%s)
 """
 
-query_delete = """
+query_delete_player = """
     DELETE FROM players WHERE id=%s
 """
 
