@@ -1,6 +1,6 @@
 from query.connection import *
 
-def get_all_player_data():
+def get_all_players_data():
     if not connector.conn.is_connected():
         connector.conn.reconnect()
     query = """

@@ -9,7 +9,7 @@ def get_all_matches_data():
     return connector.cur.fetchall()
 
 # All remain matches
-def get_remain_matches_data():
+def get_remaining_matches_data():
     query = """
         SELECT
             m.id AS match_id,
@@ -53,14 +53,14 @@ query_insert_match = """
 """
 
 # Update winner
-set_winner = """
+query_update_winner = """
     UPDATE matches
     SET winner_id = %s
     WHERE id = %s
 """
 
 # Update total win
-set_total_win = """
+query_update_total_win = """
     UPDATE players
     SET total_win = (
       SELECT COUNT(*)
@@ -77,12 +77,12 @@ def match_players(m_id, p1_id, p1_name, p2_id, p2_name):
     while True:
         winner_choice = input(f"Enter your choice\n[1] {p1_name} / [2] {p2_name}: ").strip()
         if winner_choice == "1":
-            connector.cur.execute(set_winner, (p1_id, m_id))
+            connector.cur.execute(query_update_winner, (p1_id, m_id))
             print(f"\n✅ Winner: {p1_name}!")
             break
 
         elif winner_choice == "2":
-            connector.cur.execute(set_winner, (p2_id, m_id))
+            connector.cur.execute(query_update_winner, (p2_id, m_id))
             print(f"\n✅ Winner: {p2_name}!")
             break
 
