@@ -22,7 +22,7 @@ def get_remaining_matches_data():
         LEFT JOIN players p2 ON m.player2_id = p2.id
         LEFT JOIN players p_win ON m.winner_id = p_win.id
         WHERE m.winner_id IS NULL
-        ORDER BY player1_total_win DESC, match_id DESC;
+        ORDER BY player1_total_win DESC;
     """
     connector.cur.execute(query)
     return connector.cur.fetchall()

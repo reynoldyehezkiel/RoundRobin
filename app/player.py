@@ -74,11 +74,11 @@ def delete_player():
 
             # Print all players data
             print_players(data_players)
-            print("⚠️ Type 0 to cancel\n")
+            print("⚠️ Type 0 to cancel")
             id_input = int(input("\nChoose player to delete: ").strip())
 
             if id_input == 0:
-                print(f"\nDelete player is cancel. No players are deleted.")
+                print(f"\n⚠️ No players are deleted.")
                 break
             elif id_input not in player_id:
                 print(f"\n❌ Player is not in the list. Make sure to input the right ID!\n")

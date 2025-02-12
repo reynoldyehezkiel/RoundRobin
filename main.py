@@ -27,9 +27,9 @@ def main_menu():
             delete_player()
         elif choice == "6":
             # rename_player()
-            print("⚠️ This feature is unavailable for now. Coming Soon!")
+            print("\n⚠️ This feature is unavailable for now. Coming Soon!")
         elif choice == "0":
-            print("Closing database...")
+            print("\nClosing database...")
             connector.close()
             print("Goodbye!")
             break
