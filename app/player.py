@@ -1,4 +1,3 @@
-from app.match import *
 from query.player import *
 from query.match import *
 
@@ -19,10 +18,6 @@ def add_players():
         # Asking for player name with instructions
         name_input = input("Enter a player name: ").strip()
 
-        # if name_input.lower() == "done":
-        #     print("\n✅ Finished adding players.")
-        #     break
-
         if name_input in existing_players:
             print(f"\n⚠️ Player '{name_input}' already exists! Please choose a different name.\n")
         elif name_input == "":
@@ -42,9 +37,6 @@ def add_players():
             temp_players.append(name_input)
             new_players = zip(*[iter(temp_players)]*1)
 
-    # close database
-    # connector.close()
-
 def retrieve_leaderboard():
     players_data = get_leaderboard()
     if not players_data:
@@ -63,9 +55,6 @@ def retrieve_leaderboard():
             prev_win = total_win
             print(f"{rank:<6}{name:<20} {str(total_win)}")
         print("-" * 31)
-
-    # close database
-    # connector.close()
 
 # def rename_player():
 
@@ -105,25 +94,4 @@ def delete_player():
             connector.commit()
 
             print(f"\n✅ Player '{player_name}' deleted successfully!")
-
-            # close database
-            # connector.close()
             break
-
-def print_players(data):
-    print("-" * 20)
-    print(f"{'ID':<3} {'Player':<20}")
-    print("-" * 20)
-
-    for p_id, name in data:
-        print(f"{p_id:<4}{name:<21}")
-    print("-" * 20)
-
-def print_rematch_players(data):
-    print("-" * 20)
-    print(f"{'ID':<3} {'Player':<20}")
-    print("-" * 20)
-
-    for m_id, p_id, name in data:
-        print(f"{p_id:<4}{name:<21}")
-    print("-" * 20)
