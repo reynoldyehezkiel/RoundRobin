@@ -1,15 +1,17 @@
+from app.player import *
+
 from itertools import combinations
 
 from query.player import *
 from query.match import *
 
 def generate_matches():
-    players_data = get_all_player_data
+    players_data = get_all_player_data()
     if not players_data:
         print("\nNo players available. Please add players first.")
     else:
         # Get all existing matches
-        matches_data = get_all_matches_data
+        matches_data = get_all_matches_data()
 
         # Generate new matches for players that haven't been matched yet
         if not matches_data:
@@ -39,22 +41,23 @@ def generate_matches():
         # Add new matches
         if new_matches:
             # execute the insert commands for all rows and commit to the database
-            connector.c.executemany(query_insert_match, new_matches)
-            connector.db.commit()
+            connector.cur.executemany(query_insert_match, new_matches)
+            connector.commit()
+
             print("\n--- Generating New Matches ---")
             print(f"{len(new_matches)} new matches generated and added to the database!")
         else:
             print("⚠️ No new matches to generate (matches already exist).")
 
-    # finally closing the database connection
-    connector.db.close()
+    # close database
+    connector.close()
 
 def start_match():
     # remaining match data if winner_id null
-    remain_matches = get_remain_matches_data
+    remain_matches = get_remain_matches_data()
 
     # update total win
-    players_data = get_player_by_remaining_match
+    players_data = get_player_by_remaining_match()
     data_total_win = update_total_win(players_data)
 
     if not remain_matches:
@@ -105,17 +108,18 @@ def start_match():
             print("\n❌ Invalid choice!")
 
         # Update total win
-        connector.c.executemany(set_total_win, data_total_win)
-        connector.db.commit()
+        connector.cur.executemany(set_total_win, data_total_win)
+        connector.commit()
+
         print(f"\n✅ All matches recorded")
 
-    # finally closing the database connection
-    connector.db.close()
+    # close database
+    connector.close()
 
 def rematch():
     # get data finished matches and player
-    finished_matches = get_finished_matches_data
-    first_player_data = get_player_by_finished_match
+    finished_matches = get_finished_matches_data()
+    first_player_data = get_player_by_finished_match()
     data_total_win = update_total_win(first_player_data)
 
     while True:
@@ -138,7 +142,6 @@ def rematch():
         if first_id_input not in list_first_player_id:
             print(f"\n❌ Player is not in the list. Make sure to input the right ID!\n")
         else:
-
             data_second_player = []
 
             for match in finished_matches:
@@ -177,8 +180,44 @@ def rematch():
 
             match_players(rematch_id, first_player_id, first_player_name, second_player_id, second_player_name)
 
-            connector.c.executemany(set_total_win, data_total_win)
-            connector.db.commit()
+            connector.cur.executemany(set_total_win, data_total_win)
+            connector.commit()
+
             print(f"\n✅ All matches recorded")
 
+            # close database
+            connector.close()
             break
+
+def match_players(m_id, p1_id, p1_name, p2_id, p2_name):
+    print(f"\nMatch: {p1_name} vs {p2_name}")
+    print("Please enter '1' for player 1 or '2' for player 2.")
+    print("Leave blank and press Enter to skip the match.\n")
+
+    while True:
+        winner_choice = input(f"Enter your choice (1 for {p1_name} / 2 for {p2_name}): ").strip()
+        if winner_choice == "1":
+            connector.cur.execute(set_winner, (p1_id, m_id))
+            print(f"\n✅ Winner: {p1_name}!")
+            break
+
+        elif winner_choice == "2":
+            connector.cur.execute(set_winner, (p2_id, m_id))
+            print(f"\n✅ Winner: {p2_name}!")
+            break
+
+        elif winner_choice == "":
+            print(f"\n⚠️ Match between {p1_name} and {p2_name} skipped.")
+            break
+
+        else:
+            print("\n❌ Invalid choice! Please enter '1' or '2' to record a winner or leave blank to skip.")
+
+def update_total_win(players_data):
+    player_id = list(zip(*players_data))[0]
+    result = []
+    for i in range(0, len(player_id)):
+        player_id_list = (player_id[i], player_id[i])
+        result.append(player_id_list)
+    return result
+

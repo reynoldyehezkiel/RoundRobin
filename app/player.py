@@ -1,16 +1,16 @@
-from query import connect_database as connector
+from app.match import *
 from query.player import *
 from query.match import *
 
 def add_players():
+    temp_players = []
     new_players = []
-    players_data = []
 
-    existing_players = get_all_player_data
+    existing_players = get_all_player_data()
     if existing_players:
         existing_players = list(zip(*existing_players))[1]
 
-    print("\n--- Add New Players ---")
+    print("\n=== Add New Players ===")
     print("Please enter player names one by one.")
     print("⚠️ Type 'done' when you are finished adding players.\n")
 
@@ -27,27 +27,25 @@ def add_players():
         elif name_input == "":
             print("\n⚠️ Player name cannot be empty. Please try again.\n")
         elif name_input.lower() == "done":
-            if new_players:
+            if temp_players:
+                # commit database
                 print("\n✅ Finished adding players.")
+                connector.cur.executemany(query_insert_player, new_players)
+                connector.commit()
                 break
             else:
                 print("\n⚠️ No players added.")
                 break
         else:
-            new_players.append(name_input)
-
             # convert list to list of tuples
-            players_data = zip(*[iter(new_players)]*1)
+            temp_players.append(name_input)
+            new_players = zip(*[iter(temp_players)]*1)
 
-    # execute the insert commands for all rows and commit to the database
-    connector.c.executemany(query_insert_player, players_data)
-    connector.db.commit()
-
-    # finally closing the database connection
-    connector.db.close()
+    # close database
+    connector.close()
 
 def retrieve_leaderboard():
-    players_data = get_leaderboard
+    players_data = get_leaderboard()
     if not players_data:
         print("\nNo players available. Please add players first.")
     else:
@@ -65,14 +63,14 @@ def retrieve_leaderboard():
             print(f"{rank:<6}{name:<20} {str(total_win)}")
         print("-" * 31)
 
-    # finally closing the database connection
-    connector.db.close()
+    # close database
+    connector.close()
 
 # def rename_player():
 
 def delete_player():
     # Get all players name
-    players_data = get_all_player_data
+    players_data = get_all_player_data()
 
     # Get id player
     player_id = list(zip(*players_data))[0]
@@ -101,10 +99,30 @@ def delete_player():
             # update total win
             data_total_win = update_total_win(players_data)
 
-            connector.c.execute(query_delete_player, (id_input,))
-            connector.c.executemany(set_total_win, data_total_win)
-            connector.db.commit()
+            connector.cur.execute(query_delete_player, (id_input,))
+            connector.cur.executemany(set_total_win, data_total_win)
+            connector.commit()
+
             print(f"\n✅ Player '{player_name}' deleted successfully!")
 
-            connector.db.close()
+            # close database
+            connector.close()
             break
+
+def print_players(data):
+    print("-" * 20)
+    print(f"{'ID':<3} {'Player':<20}")
+    print("-" * 20)
+
+    for p_id, name in data:
+        print(f"{p_id:<4}{name:<21}")
+    print("-" * 20)
+
+def print_rematch_players(data):
+    print("-" * 20)
+    print(f"{'ID':<3} {'Player':<20}")
+    print("-" * 20)
+
+    for m_id, p_id, name in data:
+        print(f"{p_id:<4}{name:<21}")
+    print("-" * 20)

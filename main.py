@@ -1,5 +1,7 @@
-from app import player
-from app import match
+from query import connection as connector
+
+from app.player import *
+from app.match import *
 
 def main_menu():
     while True:
@@ -10,23 +12,26 @@ def main_menu():
         print("4. Rematch")
         print("5. Delete Player")
         print("6. Rename Player (Coming Soon)")
+        print("7. Manually Generate Matches")
         print("0. Exit")
         choice = input("Select an option: ").strip()
 
         if choice == "1":
-            player.add_players()
-            match.generate_matches()
+            add_players()
+            generate_matches()
         elif choice == "2":
-            match.start_match()
+            start_match()
         elif choice == "3":
-            player.retrieve_leaderboard()
+            retrieve_leaderboard()
         elif choice == "4":
-            match.rematch()
+            rematch()
         elif choice == "5":
-            player.delete_player()
+            delete_player()
         elif choice == "6":
-            # player.rename_player()
+            # rename_player()
             print("⚠️ This feature is unavailable for now. Coming Soon!")
+        elif choice == "7":
+            generate_matches()
         elif choice == "0":
             print("Goodbye!")
             break
