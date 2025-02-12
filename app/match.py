@@ -63,7 +63,7 @@ def start_match():
         print("\n=== Start Match ===")
         print("1. All matches")
         print("2. Matches by player")
-        menu_input = int(input("Select an option: "))
+        menu_input = int(input("Select an option: ").strip())
 
         # All matches
         if menu_input == 1:
@@ -82,7 +82,7 @@ def start_match():
 
                 # print all players data
                 print_players(players_data)
-                id_input = int(input("\nChoose player to start match: "))
+                id_input = int(input("\nChoose player to start match: ").strip())
 
                 player_id = list(zip(*players_data))[0]
 
@@ -120,7 +120,7 @@ def rematch():
         # print all first players
         print("\n====== Rematch ======")
         print_players(first_player_data)
-        first_id_input = int(input("\nChoose first player to rematch: "))
+        first_id_input = int(input("\nChoose first player to rematch: ").strip())
 
         # Get first player id
         list_first_player_id = list(zip(*first_player_data))[0]
@@ -155,7 +155,7 @@ def rematch():
 
             # print all second players
             print_rematch_players(data_second_player)
-            second_id_input = int(input("\nChoose second player to rematch: "))
+            second_id_input = int(input("\nChoose second player to rematch: ").strip())
 
             # Get second player id & name
             rematch_id = ""

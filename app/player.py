@@ -72,7 +72,7 @@ def delete_player():
         # Print all players data
         print_players(players_data)
         print("⚠️ Type 0 to cancel\n")
-        id_input = int(input("\nChoose player to delete: "))
+        id_input = int(input("\nChoose player to delete: ").strip())
 
         if id_input == 0:
             print(f"\nDelete player is cancel. No players are deleted.")

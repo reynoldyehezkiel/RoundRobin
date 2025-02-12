@@ -22,7 +22,7 @@ def get_remain_matches_data():
         LEFT JOIN players p2 ON m.player2_id = p2.id
         LEFT JOIN players p_win ON m.winner_id = p_win.id
         WHERE m.winner_id IS NULL
-        ORDER BY player1_total_win DESC;
+        ORDER BY player1_total_win DESC, match_id DESC;
     """
     connector.cur.execute(query)
     return connector.cur.fetchall()
@@ -71,12 +71,11 @@ set_total_win = """
 """
 
 def match_players(m_id, p1_id, p1_name, p2_id, p2_name):
-    print(f"\nMatch: {p1_name} vs {p2_name}")
-    print("Please enter '1' for player 1 or '2' for player 2.")
-    print("Leave blank and press Enter to skip the match.\n")
+    print(f"\n⚔️ Match: {p1_name} vs {p2_name}")
+    print("⚠️ Leave blank and press Enter to skip the match.\n")
 
     while True:
-        winner_choice = input(f"Enter your choice (1 for {p1_name} / 2 for {p2_name}): ").strip()
+        winner_choice = input(f"Enter your choice\n[1] {p1_name} / [2] {p2_name}: ").strip()
         if winner_choice == "1":
             connector.cur.execute(set_winner, (p1_id, m_id))
             print(f"\n✅ Winner: {p1_name}!")
