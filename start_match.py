@@ -16,7 +16,6 @@ else:
     print("1. All matches")
     print("2. Matches by player")
     menu_input = int(input("Choose Menu: "))
-    print()
 
     # All matches
     if menu_input == 1:
