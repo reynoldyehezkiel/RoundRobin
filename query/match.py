@@ -4,7 +4,7 @@ from query.connection import *
 def get_all_matches_data():
     query = """
             SELECT * FROM MATCHES;
-        """
+    """
     connector.cur.execute(query)
     return connector.cur.fetchall()
 
@@ -40,7 +40,7 @@ def get_finished_matches_data():
         LEFT JOIN players p2 ON m.player2_id = p2.id
         LEFT JOIN players p_win ON m.winner_id = p_win.id
         WHERE winner_id IS NOT NULL;
-        """
+    """
     connector.cur.execute(query)
     return connector.cur.fetchall()
 
@@ -76,27 +76,31 @@ def match_players(m_id, p1_id, p1_name, p2_id, p2_name):
 
     while True:
         winner_choice = input(f"Enter your choice\n[1] {p1_name} / [2] {p2_name}: ").strip()
+
         if winner_choice == "1":
-            connector.cur.execute(query_update_winner, (p1_id, m_id))
-            print(f"\n✅ Winner: {p1_name}!")
-            break
-
+            winner_id, winner_name = p1_id, p1_name
         elif winner_choice == "2":
-            connector.cur.execute(query_update_winner, (p2_id, m_id))
-            print(f"\n✅ Winner: {p2_name}!")
-            break
-
+            winner_id, winner_name = p2_id, p2_name
         elif winner_choice == "":
             print(f"\n⚠️ Match between {p1_name} and {p2_name} skipped.")
-            break
-
+            return
         else:
             print("\n❌ Invalid choice! Please enter '1' or '2' to record a winner or leave blank to skip.")
+            continue
+
+        # Update winner in the database
+        connector.cur.execute(query_update_winner, (winner_id, m_id))
+        print(f"\n✅ Winner: {winner_name}!")
+        break
 
 def update_total_win(players_data):
-    player_id = list(zip(*players_data))[0]
-    result = []
-    for i in range(0, len(player_id)):
-        player_id_list = (player_id[i], player_id[i])
-        result.append(player_id_list)
-    return result
+    # No update needed if the list is empty
+    if not players_data:
+        return
+
+    # Prepare data for updating total wins
+    data_total_win = [(player[0], player[0]) for player in players_data]
+
+    # Execute the update query
+    connector.cur.executemany(query_update_total_win, data_total_win)
+    connector.commit()

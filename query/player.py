@@ -44,9 +44,9 @@ def get_player_by_finished_match():
 
 query_insert_player = """
     INSERT INTO players
-        (name)
+        (id, name)
     VALUES
-        (%s)
+        (%s, %s)
 """
 
 query_delete_player = """

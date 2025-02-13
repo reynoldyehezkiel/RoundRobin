@@ -10,7 +10,7 @@ def main_menu():
         print("3. Leaderboard")
         print("4. Rematch")
         print("5. Delete Player")
-        print("6. Rename Player (Coming Soon)")
+        print("6. Rename Player (WIP)")
         print("0. Exit")
         choice = input("Select an option: ").strip()
 
@@ -26,8 +26,8 @@ def main_menu():
         elif choice == "5":
             delete_player()
         elif choice == "6":
-            # rename_player()
-            print("\n⚠️ This feature is unavailable for now. Coming Soon!")
+            rename_player()
+            print("\n⚠️ This feature is under development!")
         elif choice == "0":
             print("\nClosing database...")
             connector.close()

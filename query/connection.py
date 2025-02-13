@@ -6,7 +6,8 @@ class Connection:
             host="localhost",
             user="root",
             passwd="",
-            database="roundrobin"
+            # database="roundrobin"
+            database="roundrobintest"
         )
         self.cur = self.conn.cursor()
 
@@ -14,7 +15,6 @@ class Connection:
         self.conn.commit()
 
     def close(self):
-        # self.cur.close()
         self.conn.close()
 
 # Use a single shared database instance
