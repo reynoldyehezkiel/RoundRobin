@@ -149,7 +149,7 @@ def rematch():
         # Get actual first player ID and name
         first_id_input, first_player_name = data_first_player[index_first_input - 1]
 
-        print(f'\nYou choose {first_player_name}')
+        print(f'\nPlayer {first_player_name} selected!')
 
         while True:
             # Get valid second players

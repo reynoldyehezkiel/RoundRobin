@@ -53,6 +53,12 @@ query_delete_player = """
     DELETE FROM players WHERE id=%s
 """
 
+query_rename_player = """
+    UPDATE players
+    SET name = %s
+    WHERE id = %s;
+"""
+
 def print_players(data):
     print("-" * 20)
     print(f"{'No':<3} {'Player':<20}")

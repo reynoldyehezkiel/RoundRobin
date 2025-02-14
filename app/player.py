@@ -70,7 +70,62 @@ def retrieve_leaderboard():
     print("-" * 31)
 
 def rename_player():
-    print("\n⚠️ This feature is under development!")
+    # Get existing players from the database
+    data_players = get_all_players_data()
+    existing_players = set(name for _, name in data_players) if data_players else set()
+
+    if not data_players:
+        print("\n⚠️ No players available. Please add players first!")
+        return
+
+    while True:
+        print("\n=== Rename Player ===")
+        print_players(data_players)
+        print("⚠️ Type 0 to cancel")
+
+        try:
+            index_input = int(input("\nChoose player to rename: ").strip())
+        except ValueError:
+            print("\n❌ Invalid input! Please enter a valid number.")
+            continue
+
+        if index_input == 0:
+            print("\n⚠️ No players were renamed.")
+            break
+        elif not (1 <= index_input <= len(data_players)):
+            print("\n❌ Invalid selection. Please choose a number from the list!")
+        else:
+            # Get actual player ID and name
+            player_id, player_name = data_players[index_input - 1]
+
+            print(f"\n✅ Player '{player_name}' selected!")
+            print("⚠️ Type 0 to back")
+
+            while True:
+                new_name_input = input("\nEnter new player name: ").strip()
+
+                if new_name_input == player_name:
+                    print("\n⚠️ Player's name can't be same!")
+
+                elif new_name_input == "":
+                    print("\n⚠️ Player's name can't be empty!")
+
+                # Cancel operation
+                elif new_name_input == "0":
+                    print("\n⚠️ No players were added.")
+                    break
+
+                # Validate player name
+                elif new_name_input in existing_players:
+                    print(f"\n⚠️ Player '{new_name_input}' already exists! Please choose a different name.")
+
+                else:
+                    # Rename player to the database
+                    connector.cur.execute(query_rename_player, (new_name_input, player_id))
+                    connector.commit()
+                    print(f"\n✅ Player '{player_name}' successfully changed name to '{new_name_input}'")
+                break
+            break
 
 def delete_player():
     # Get all players
