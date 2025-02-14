@@ -10,7 +10,7 @@ def add_players():
     print("\n=== Add New Players ===")
     print("Please enter player names one by one.")
     print("⚠️ Press Enter to finish adding players.")
-    print("⚠️ Type 0 to cancel\n")
+    print("⚠️ Type 0 to back\n")
 
     new_players = []  # List to store newly added players
 
@@ -34,7 +34,6 @@ def add_players():
 
         # Cancel operation
         elif name_input == "0":
-            print("\n⚠️ No players were added.")
             break
 
         # Validate player name
@@ -81,7 +80,7 @@ def rename_player():
     while True:
         print("\n=== Rename Player ===")
         print_players(data_players)
-        print("⚠️ Type 0 to cancel")
+        print("⚠️ Type 0 to back")
 
         try:
             index_input = int(input("\nChoose player to rename: ").strip())
@@ -90,7 +89,6 @@ def rename_player():
             continue
 
         if index_input == 0:
-            print("\n⚠️ No players were renamed.")
             break
         elif not (1 <= index_input <= len(data_players)):
             print("\n❌ Invalid selection. Please choose a number from the list!")
@@ -138,7 +136,7 @@ def delete_player():
     while True:
         print("\n=== Delete Player ===")
         print_players(data_players)
-        print("⚠️ Type 0 to cancel")
+        print("⚠️ Type 0 to back")
 
         try:
             index_input = int(input("\nChoose player to delete: ").strip())
@@ -147,7 +145,6 @@ def delete_player():
             continue
 
         if index_input == 0:
-            print("\n⚠️ No players were deleted.")
             break
         elif not (1 <= index_input <= len(data_players)):
             print("\n❌ Invalid selection. Please choose a number from the list!\n")

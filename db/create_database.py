@@ -1,4 +1,3 @@
-# Python implementation to create a Database in MySQL
 import mysql.connector
 
 # connecting to the mysql server

@@ -1,4 +1,4 @@
-from query.connection import *
+from db.connection import *
 
 def get_all_players_data():
     if not connector.conn.is_connected():

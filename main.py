@@ -1,6 +1,6 @@
 from app.player import *
 from app.match import *
-from query.connection import *
+from db.connection import *
 
 def main_menu():
     while True:

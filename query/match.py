@@ -1,4 +1,4 @@
-from query.connection import *
+from db.connection import *
 
 # All Matches
 def get_all_matches_data():

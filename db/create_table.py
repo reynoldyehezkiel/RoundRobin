@@ -1,4 +1,4 @@
-from query.connection import *
+from connection import *
 
 # create statement for players
 players_create = """
