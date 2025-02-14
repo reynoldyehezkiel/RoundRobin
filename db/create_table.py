@@ -1,4 +1,4 @@
-from query import connect_database as connector
+from query.connection import *
 
 # create statement for players
 players_create = """
@@ -25,16 +25,16 @@ matches_create = """
 	)
 """
 
-connector.c.execute(players_create)
-connector.c.execute(matches_create)
+connector.cur.execute(players_create)
+connector.cur.execute(matches_create)
 
 # print the table details
-connector.c.execute("desc players")
-for i in connector.c:
+connector.cur.execute("desc players")
+for i in connector.cur:
 	print(i)
-connector.c.execute("desc matches")
-for i in connector.c:
+connector.cur.execute("desc matches")
+for i in connector.cur:
 	print(i)
 
 # finally closing the database connection
-connector.db.close()
+connector.close()
