@@ -1,3 +1,4 @@
+from app.match import generate_matches
 from query.player import *
 from query.match import *
 
@@ -8,7 +9,8 @@ def add_players():
 
     print("\n=== Add New Players ===")
     print("Please enter player names one by one.")
-    print("⚠️ Type 'done' when you are finished adding players.\n")
+    print("⚠️ Press Enter to finish adding players.")
+    print("⚠️ Type 0 to cancel\n")
 
     new_players = []  # List to store newly added players
 
@@ -16,26 +18,32 @@ def add_players():
         # Asking for player name with instructions
         name_input = input("Enter a player name: ").strip()
 
-        if name_input.lower() == "done":
+        # If the user presses enter, commit the database changes
+        if name_input == "":
             if new_players:
                 # Commit new players to the database
-                print(new_players)
                 connector.cur.executemany(query_insert_player, new_players)
                 connector.commit()
                 print(f"\n✅ Finished adding {len(new_players)} players.")
+
+                # Generate matches after adding players
+                generate_matches()
+                break
             else:
-                print("\n⚠️ No players added.")
+                print("\n⚠️ Player's name can't be empty!\n")
+
+        # Cancel operation
+        elif name_input == "0":
+            print("\n⚠️ No players were added.")
             break
 
         # Validate player name
-        elif name_input == "":
-            print("\n⚠️ Player name cannot be empty. Please try again.\n")
         elif name_input in existing_players:
             print(f"\n⚠️ Player '{name_input}' already exists! Please choose a different name.\n")
         else:
             # Add new player to the list
-            new_players.append((None,name_input))  # Assuming player ID is auto-generated
-            existing_players.add(name_input)  # Add to the set of existing players
+            new_players.append((None, name_input))
+            existing_players.add(name_input)
 
 def retrieve_leaderboard():
     data_players = get_leaderboard()
@@ -45,7 +53,8 @@ def retrieve_leaderboard():
         return
 
     # Print the leaderboard header
-    print("\n--------- Leaderboard ---------")
+    print("\n========= Leaderboard =========")
+    print("-" * 31)
     print(f"{'Rank':<5} {'Player':<19} {'Wins':>5}")
     print("-" * 31)
 
@@ -71,33 +80,30 @@ def delete_player():
         print("\n⚠️ No players available. Please add players first!")
         return
 
-    # Create a dictionary {player_id: player_name} for quick lookup
-    player_dict = {player[0]: player[1] for player in data_players}
-
     while True:
         print("\n=== Delete Player ===")
-        print_players(data_players)  # Print all players
+        print_players(data_players)
         print("⚠️ Type 0 to cancel")
 
         try:
-            id_input = int(input("\nChoose player to delete: ").strip())
+            index_input = int(input("\nChoose player to delete: ").strip())
         except ValueError:
-            print("\n❌ Invalid input! Please enter a valid player ID.\n")
-            continue  # Restart the loop if input is not an integer
+            print("\n❌ Invalid input! Please enter a valid number.\n")
+            continue
 
-        if id_input == 0:
+        if index_input == 0:
             print("\n⚠️ No players were deleted.")
             break
-        elif id_input not in player_dict:
-            print("\n❌ Player is not in the list. Make sure to input the right ID!\n")
+        elif not (1 <= index_input <= len(data_players)):
+            print("\n❌ Invalid selection. Please choose a number from the list!\n")
         else:
-            player_name = player_dict[id_input]
+            # Get actual player ID and name
+            player_id, player_name = data_players[index_input - 1]
 
             # Delete player from database
-            connector.cur.execute(query_delete_player, (id_input,))
+            connector.cur.execute(query_delete_player, (player_id,))
             update_total_win(data_players)
             connector.commit()
 
             print(f"\n✅ Player '{player_name}' deleted successfully!")
             break
-

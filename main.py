@@ -16,7 +16,6 @@ def main_menu():
 
         if choice == "1":
             add_players()
-            generate_matches()
         elif choice == "2":
             start_match()
         elif choice == "3":

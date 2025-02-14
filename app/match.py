@@ -40,7 +40,7 @@ def generate_matches():
         print("\n=== Generating New Matches ===")
         print(f"{len(new_matches)} new matches generated and added to the database!")
     else:
-        print("⚠️ No new matches to generate (matches already exist).")
+        print("⚠️ No new matches to generate. Matches already exist.")
 
 def start_match():
     data_remaining_matches = get_remaining_matches_data()
@@ -80,42 +80,44 @@ def start_match():
             print("\n✅ All matches recorded")
             break
 
-        elif menu_input == 2:
-            while True:
-                # Get updated data
-                data_players = get_player_by_remaining_match()
+        while True:
+            # Get updated data
+            data_players = get_player_by_remaining_match()
 
-                print()
-                print_players(data_players)
-                print("⚠️ Type 0 to cancel")
+            if not data_players:
+                print("\n⚠️ No players available.")
+                break
 
-                try:
-                    id_input = int(input("\nChoose player to start match: ").strip())
-                except ValueError:
-                    print("\n❌ Invalid input! Please enter a valid player ID or 0 to go back.\n")
-                    continue
+            print("\n=== Choose Player to Start Match ===")
+            print_players(data_players)  # Show indexed list
+            print("⚠️ Type 0 to cancel")
 
-                if id_input == 0:
-                    break
+            try:
+                index_input = int(input("\nChoose player to start match: ").strip())
+            except ValueError:
+                print("\n❌ Invalid input. Please enter a valid number.\n")
+                continue
 
-                # Create a set of valid player IDs for faster lookup
-                player_ids = {player[0] for player in data_players}
+            if index_input == 0:
+                break
 
-                if id_input not in player_ids:
-                    print("\n❌ Player is not in the list. Make sure to input the right ID!\n")
-                    continue
+            if not (1 <= index_input <= len(data_players)):
+                print("\n❌ Invalid selection. Please choose a number from the list!\n")
+                continue
 
-                # Start matches for the selected player
-                for match in data_remaining_matches:
-                    match_id, player1_id, player1_name, player2_id, player2_name = match[:5]
+            # Get actual player ID and name
+            player_id, player_name = data_players[index_input - 1]
 
-                    if id_input in (player1_id, player2_id):
-                        match_players(match_id, player1_id, player1_name, player2_id, player2_name)
+            # Start matches for the selected player
+            for match in data_remaining_matches:
+                match_id, player1_id, player1_name, player2_id, player2_name = match[:5]
 
-                # Update total win
-                update_total_win(data_players)
-                print("\n✅ All matches recorded")
+                if player_id in (player1_id, player2_id):
+                    match_players(match_id, player1_id, player1_name, player2_id, player2_name)
 
+            # Update total win
+            update_total_win(data_players)
+            print("\n✅ All matches recorded")
 
 def rematch():
     data_finished_matches = get_finished_matches_data()
@@ -123,56 +125,74 @@ def rematch():
         print("\n⚠️ No matches available. Please add players first!")
         return
 
-    data_first_player = get_player_by_finished_match()
-    data_total_win = update_total_win(data_first_player)
-
-
-    # Get valid first player input
-    list_first_player_id = {player[0]: player[1] for player in data_first_player}
     while True:
-        try:
-            print("\n====== Rematch ======")
-            print_players(data_first_player)
+        data_first_player = get_player_by_finished_match()
+        data_total_win = update_total_win(data_first_player)
 
-            first_id_input = int(input("\nChoose first player to rematch: ").strip())
-            if first_id_input in list_first_player_id:
+        print("\n====== Rematch ======")
+        print_players(data_first_player)  # Show indexed list
+        print("⚠️ Type 0 to back")
+
+        # Get valid first player input
+        while True:
+            try:
+                index_first_input = int(input("\nChoose first player to rematch: ").strip())
+                if index_first_input == 0:
+                    return  # Back to main menu
+                if 1 <= index_first_input <= len(data_first_player):
+                    break
+                else:
+                    print("\n❌ Invalid selection. Choose a number from the list!")
+            except ValueError:
+                print("\n❌ Invalid input. Please enter a valid number!\n")
+
+        # Get actual first player ID and name
+        first_id_input, first_player_name = data_first_player[index_first_input - 1]
+
+        print(f'\nYou choose {first_player_name}')
+
+        while True:
+            # Get valid second players
+            data_second_player = [
+                (match[0], match[3], match[4]) if match[1] == first_id_input else (match[0], match[1], match[2])
+                for match in data_finished_matches if first_id_input in (match[1], match[3])
+            ]
+
+            if not data_second_player:
+                print("\n⚠️ No valid second players found. Returning to menu.")
                 break
-            else:
-                print("\n❌ Player is not in the list. Make sure to input the right ID!")
-        except ValueError:
-            print("\n❌ Invalid input. Please enter a valid numeric ID!")
 
-    first_player_name = list_first_player_id[first_id_input]
-
-    # Get valid second players
-    data_second_player = [
-        (match[0], match[3], match[4]) if match[1] == first_id_input else (match[0], match[1], match[2])
-        for match in data_finished_matches if first_id_input in (match[1], match[3])
-    ]
-
-
-    # Get valid second player input
-    list_second_player_id = {player[1]: (player[0], player[2]) for player in data_second_player}
-    while True:
-        try:
             print()
-            print_rematch_players(data_second_player)
+            print_rematch_players(data_second_player)  # Show indexed list for second players
+            print("⚠️ Type 0 to back")
 
-            second_id_input = int(input("\nChoose second player to rematch: ").strip())
-            if second_id_input in list_second_player_id:
+            # Get valid second player input
+            while True:
+                try:
+                    index_second_input = int(input("\nChoose second player to rematch: ").strip())
+                    if index_second_input == 0:
+                        break  # Go back to first player selection
+                    if 1 <= index_second_input <= len(data_second_player):
+                        break
+                    else:
+                        print("\n❌ Invalid selection. Choose a number from the list!")
+                except ValueError:
+                    print("\n❌ Invalid input. Please enter a valid number!\n")
+
+            if index_second_input == 0:
                 break
-            else:
-                print("\n❌ Player is not in the list. Make sure to input the right ID!")
-        except ValueError:
-            print("\n❌ Invalid input. Please enter a valid numeric ID!")
 
-    rematch_id, second_player_name = list_second_player_id[second_id_input]
+            # Get actual second player data (match_id, p_id, player_name)
+            rematch_data = data_second_player[index_second_input - 1]
+            rematch_id, rematch_p_id, second_player_name = rematch_data  # Unpack the three elements
 
-    # Match players
-    match_players(rematch_id, first_id_input, first_player_name, second_id_input, second_player_name)
+            if rematch_id is not None and second_player_name is not None:
+                # Match players
+                match_players(rematch_id, first_id_input, first_player_name, rematch_p_id, second_player_name)
 
-    # Update total wins
-    connector.cur.executemany(query_update_total_win, data_total_win)
-    connector.commit()
+                # Update total wins
+                connector.cur.executemany(query_update_total_win, data_total_win)
+                connector.commit()
 
-    print("\n✅ All matches recorded")
+                print("\n✅ All matches recorded")
+                return
