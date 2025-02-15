@@ -1,17 +1,15 @@
 from db.connection import *
 
 def get_all_players_data():
-    if not connector.conn.is_connected():
-        connector.conn.reconnect()
     query = """
-        SELECT id, name FROM PLAYERS;
+        SELECT id, name FROM players;
     """
     connector.cur.execute(query)
     return connector.cur.fetchall()
 
 def get_leaderboard():
     query = """
-        SELECT id, name, total_win FROM PLAYERS
+        SELECT id, name, total_win FROM players
         ORDER BY total_win DESC;
     """
     connector.cur.execute(query)

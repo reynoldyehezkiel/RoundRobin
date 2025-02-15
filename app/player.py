@@ -15,7 +15,7 @@ def add_players():
     new_players = []  # List to store newly added players
 
     while True:
-        # Asking for player name with instructions
+        # Asking for player name
         name_input = input("Enter a player name: ").strip()
 
         # If the user presses enter, commit the database changes

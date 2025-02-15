@@ -114,10 +114,10 @@ def start_match():
 
                 if player_id in (player1_id, player2_id):
                     match_players(match_id, player1_id, player1_name, player2_id, player2_name)
-
+            break
             # Update total win
-            update_total_win(data_players)
-            print("\n✅ All matches recorded")
+        update_total_win(data_players)
+        print("\n✅ All matches recorded")
 
 def rematch():
     data_finished_matches = get_finished_matches_data()
