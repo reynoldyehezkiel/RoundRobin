@@ -1,6 +1,7 @@
 from app.match import generate_matches
 from query.player import *
 from query.match import *
+from query.team import *
 
 def add_players():
     # Get existing players from the database

@@ -119,10 +119,14 @@ def start_match():
         update_total_win(data_players)
         print("\n✅ All matches recorded")
 
+        # Get updated remaining matches
+        data_remaining_matches = get_remaining_matches_data()
+
+
 def rematch():
     data_finished_matches = get_finished_matches_data()
     if not data_finished_matches:
-        print("\n⚠️ No matches available. Please add players first!")
+        print("\n⚠️ No finished matches available. Please add players first!")
         return
 
     while True:
