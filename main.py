@@ -13,7 +13,8 @@ def main_menu():
         print("5. Rename Player")
         print("6. Delete Player")
         print("7. Create New Team")
-        print("8. Assign Player to Team [🛠️ WIP] ")
+        print("8. Assign Player to Team ")
+        print("9. View Team [🛠️ WIP] ")
         print("0. Exit")
         choice = input("Select an option: ").strip()
 
@@ -33,6 +34,8 @@ def main_menu():
             create_team()
         elif choice == "8":
             assign_player_to_team()
+        elif choice == "9":
+            view_team()
         elif choice == "0":
             print("\nClosing database...")
             connector.close()

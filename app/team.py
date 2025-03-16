@@ -101,10 +101,47 @@ def assign_player_to_team():
 def view_team():
     print("\n🛠️ This feature is in development")
 
+    # Get existing teams from the database
+    data_teams = get_all_teams_data()
+
+    if not data_teams:
+        print("\n⚠️ No teams available. Please create team first!")
+        return
+
+    while True:
+        ## Player section
+        print("\n=== Team List ===")
+        print_teams(data_teams)
+        print("⚠️ Type 0 to back")
+
+        # Choose team
+        try:
+            team_input = int(input(f"\nChoose Team: ").strip())
+        except ValueError:
+            print("\n❌ Invalid input! Please enter a valid number.")
+            continue
+
+        if team_input == 0:
+            break
+        elif not (1 <= team_input <= len(data_teams)):
+            print("\n❌ Invalid selection. Please choose a number from the list!\n")
+            continue
+        else:
+            # Get actual team ID and name
+            team_id, team_name = data_teams[team_input - 1]
+
+            # Get players from selected team
+            print()
+            data_team_players = get_team_players(team_id)
+            if data_team_players:
+                print_players(data_team_players, "team", team_name)
+            else:
+                print(f'❌ No players are assigned in team {team_name}!')
+
 """
     - Main Menu
         1. Create team ✅
-        2. Assign players to teams 🛠️
+        2. Assign players to teams ✅
         3. View team and its players ❌
     
     - Add New Player

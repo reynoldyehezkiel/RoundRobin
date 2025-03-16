@@ -2,7 +2,7 @@ from db.connection import *
 
 def get_all_teams_data():
     query = """
-            SELECT id, name FROM teams;
+        SELECT id, name FROM teams;
     """
     connector.cur.execute(query)
     return connector.cur.fetchall()
@@ -18,6 +18,16 @@ def get_available_teams(pid):
         );
     """
     connector.cur.execute(query, (pid,))
+    return connector.cur.fetchall()
+
+def get_team_players(tid):
+    query = """
+        SELECT p.id, p.name
+        FROM players p
+        LEFT JOIN player_teams pt ON p.id = pt.player_id
+        WHERE pt.team_id = (%s)
+    """
+    connector.cur.execute(query, (tid,))
     return connector.cur.fetchall()
 
 query_insert_team = """
