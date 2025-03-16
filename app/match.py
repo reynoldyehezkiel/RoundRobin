@@ -89,7 +89,7 @@ def start_match():
                 break
 
             print("\n=== Choose Player to Start Match ===")
-            print_players(data_players)  # Show indexed list
+            print_players(data_players)
             print("⚠️ Type 0 to cancel")
 
             try:
@@ -133,8 +133,9 @@ def rematch():
         data_first_player = get_player_by_finished_match()
         data_total_win = update_total_win(data_first_player)
 
+        # Show first players
         print("\n====== Rematch ======")
-        print_players(data_first_player)  # Show indexed list
+        print_players(data_first_player)
         print("⚠️ Type 0 to back")
 
         # Get valid first player input
@@ -166,8 +167,9 @@ def rematch():
                 print("\n⚠️ No valid second players found. Returning to menu.")
                 break
 
+            # Show second players
             print()
-            print_rematch_players(data_second_player)  # Show indexed list for second players
+            print_players(data_second_player, "rematch")
             print("⚠️ Type 0 to back")
 
             # Get valid second player input

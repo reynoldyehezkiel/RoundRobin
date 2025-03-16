@@ -57,22 +57,34 @@ query_rename_player = """
     WHERE id = %s;
 """
 
-def print_players(data):
+# def print_players(data):
+#     print("-" * 20)
+#     print(f"{'No':<3} {'Player':<20}")
+#     print("-" * 20)
+#
+#     for idx, (p_id, name) in enumerate(data, start=1):
+#         print(f"{idx:<4}{name:<21}")
+#     print("-" * 20)
+#
+# def print_rematch_players(data):
+#     print("-" * 20)
+#     print(f"{'No':<3} {'Player':<20}")
+#     print("-" * 20)
+#
+#     for idx, (match_id, p_id, name) in enumerate(data, start=1):
+#         print(f"{idx:<4}{name:<21}")
+#     print("-" * 20)
+
+def print_players(data, print_type="default"):
     print("-" * 20)
     print(f"{'No':<3} {'Player':<20}")
     print("-" * 20)
 
-    for idx, (p_id, name) in enumerate(data, start=1):
-        print(f"{idx:<4}{name:<21}")
-    print("-" * 20)
-
-def print_rematch_players(data):
-    print("-" * 20)
-    print(f"{'No':<3} {'Player':<20}")
-    print("-" * 20)
-
-    for idx, (match_id, p_id, name) in enumerate(data, start=1):
-        print(f"{idx:<4}{name:<21}")
+    if print_type == "default":
+        for idx, (p_id, name) in enumerate(data, start=1):
+            print(f"{idx:<4}{name:<21}")
+    elif print_type == "rematch":
+        for idx, (match_id, p_id, name) in enumerate(data, start=1):
+            print(f"{idx:<4}{name:<21}")
 
     print("-" * 20)
-
