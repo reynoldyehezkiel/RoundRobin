@@ -45,7 +45,7 @@ def add_players():
             new_players.append((None, name_input))
             existing_players.add(name_input)
 
-def retrieve_leaderboard():
+def view_leaderboard():
     data_players = get_leaderboard()
 
     if not data_players:

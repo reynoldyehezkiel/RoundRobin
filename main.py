@@ -3,46 +3,61 @@ from app.match import *
 from app.team import *
 from db.connection import *
 
-def main_menu():
-    while True:
-        print("\n=== Round Robin ===")
-        print("1. Add New Players")
-        print("2. Start Match")
-        print("3. Leaderboard")
-        print("4. Rematch")
-        print("5. Rename Player")
-        print("6. Delete Player")
-        print("7. Create New Team")
-        print("8. Assign Player to Team ")
-        print("9. View Team [🛠️ WIP] ")
-        print("0. Exit")
-        choice = input("Select an option: ").strip()
+def display_menu(title, options):
+    print(f"\n=== {title} ===")
+    for key, value in options.items():
+        print(f"{key}. {value['label']}")
+    choice = input("Select an option: ").strip()
+    options.get(choice, {"action": invalid_choice})["action"]()
 
-        if choice == "1":
-            add_players()
-        elif choice == "2":
-            start_match()
-        elif choice == "3":
-            retrieve_leaderboard()
-        elif choice == "4":
-            rematch()
-        elif choice == "5":
-            rename_player()
-        elif choice == "6":
-            delete_player()
-        elif choice == "7":
-            create_team()
-        elif choice == "8":
-            assign_player_to_team()
-        elif choice == "9":
-            view_team()
-        elif choice == "0":
-            print("\nClosing database...")
-            connector.close()
-            print("Goodbye!")
-            break
-        else:
-            print("Invalid choice. Please try again.")
+def player_menu():
+    while True:
+        options = {
+            "1": {"label": "Add New Players", "action": add_players},
+            "2": {"label": "Rename Player", "action": rename_player},
+            "3": {"label": "Delete Player", "action": delete_player},
+            "4": {"label": "Leaderboard", "action": view_leaderboard},
+            "0": {"label": "Back", "action": lambda: None}
+        }
+        display_menu("Player Menu", options)
+
+def match_menu():
+    while True:
+        options = {
+            "1": {"label": "Start Match", "action": start_match},
+            "2": {"label": "Rematch", "action": rematch},
+            "0": {"label": "Back", "action": lambda: None}
+        }
+        display_menu("Match Menu", options)
+
+def team_menu():
+    while True:
+        options = {
+            "1": {"label": "Create New Team", "action": create_team},
+            "2": {"label": "Assign Player to Team", "action": assign_player_to_team},
+            "3": {"label": "View Team", "action": view_team},
+            "0": {"label": "Back", "action": lambda: None}
+        }
+        display_menu("Team Menu", options)
+
+def exit_program():
+    print("\nClosing database...")
+    connector.close()
+    print("Goodbye!")
+    exit()
+
+def invalid_choice():
+    print("Invalid choice. Please try again.")
+
+def main_menu():
+    menu_options = {
+        "1": {"label": "Player", "action": player_menu},
+        "2": {"label": "Match", "action": match_menu},
+        "3": {"label": "Team", "action": team_menu},
+        "0": {"label": "Exit", "action": exit_program}
+    }
+    while True:
+        display_menu("Round Robin", menu_options)
 
 if __name__ == "__main__":
     main_menu()

@@ -122,7 +122,6 @@ def start_match():
         # Get updated remaining matches
         data_remaining_matches = get_remaining_matches_data()
 
-
 def rematch():
     data_finished_matches = get_finished_matches_data()
     if not data_finished_matches:
