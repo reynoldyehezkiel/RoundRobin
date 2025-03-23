@@ -126,7 +126,61 @@ def view_team():
             print(f'❌ No players are assigned in team {team_name}!')
 
 def rename_team():
-    print("\n⚠️🛠️ This feature is in development")
+    # Get existing teams from the database
+    data_teams = get_all_teams_data()
+    existing_teams = set(name for _, name in data_teams) if data_teams else set()
+
+    if not data_teams:
+        print("\n⚠️ No teams available. Please add teams first!")
+        return
+
+    while True:
+        print("\n=== Rename Team ===")
+        print_teams(data_teams)
+        print("⚠️ Type 0 to back")
+
+        try:
+            index_input = int(input("\nChoose team to rename: ").strip())
+        except ValueError:
+            print("\n❌ Invalid input! Please enter a valid number.")
+            continue
+
+        if index_input == 0:
+            break
+        elif not (1 <= index_input <= len(data_teams)):
+            print("\n❌ Invalid selection. Please choose a number from the list!")
+        else:
+            # Get actual team ID and name
+            team_id, team_name = data_teams[index_input - 1]
+
+            print(f"\n✅ Team '{team_name}' selected!")
+            print("⚠️ Type 0 to back")
+
+            while True:
+                new_name_input = input("\nEnter new team name: ").strip()
+
+                if new_name_input == team_name:
+                    print("\n⚠️ Team's name can't be same!")
+
+                elif new_name_input == "":
+                    print("\n⚠️ Team's name can't be empty!")
+
+                # Cancel operation
+                elif new_name_input == "0":
+                    print("\n⚠️ No teams were added.")
+                    break
+
+                # Validate team name
+                elif new_name_input in existing_teams:
+                    print(f"\n⚠️ Team '{new_name_input}' already exists! Please choose a different name.")
+
+                else:
+                    # Rename team to the database
+                    connector.cur.execute(query_rename_team, (new_name_input, team_id))
+                    connector.commit()
+                    print(f"\n✅ Team '{team_name}' successfully changed name to '{new_name_input}'")
+                break
+            break
     return
 
 def delete_team():

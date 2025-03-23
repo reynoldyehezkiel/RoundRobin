@@ -46,7 +46,7 @@ def team_menu():
         "1": {"label": "Create New Team", "action": create_team},
         "2": {"label": "Assign Player to Team", "action": assign_player_to_team},
         "3": {"label": "View Team", "action": view_team},
-        "4": {"label": "Rename Team [🛠️ WIP]", "action": rename_team},
+        "4": {"label": "Rename Team", "action": rename_team},
         "5": {"label": "Delete Team", "action": delete_team},
         "0": {"label": "Back"}
     }

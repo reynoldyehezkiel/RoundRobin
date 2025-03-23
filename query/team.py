@@ -48,6 +48,12 @@ query_delete_team = """
     DELETE FROM teams WHERE id=%s
 """
 
+query_rename_team = """
+    UPDATE teams
+    SET name = %s
+    WHERE id = %s;
+"""
+
 def print_teams(data):
     print("-" * 15)
     print(f"{'No':<3} {'Team':<20}")
