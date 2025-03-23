@@ -44,6 +44,10 @@ query_insert_player_team = """
         (%s, %s)
 """
 
+query_delete_team = """
+    DELETE FROM teams WHERE id=%s
+"""
+
 def print_teams(data):
     print("-" * 15)
     print(f"{'No':<3} {'Team':<20}")

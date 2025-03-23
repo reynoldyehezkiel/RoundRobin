@@ -126,7 +126,39 @@ def view_team():
             print(f'❌ No players are assigned in team {team_name}!')
 
 def rename_team():
+    print("\n⚠️🛠️ This feature is in development")
     return
 
 def delete_team():
-    return
+    # Get all teams
+    data_teams = get_all_teams_data()
+
+    if not data_teams:
+        print("\n⚠️ No teams available. Please add teams first!")
+        return
+
+    while True:
+        print("\n=== Delete Team ===")
+        print_teams(data_teams)
+        print("⚠️ Type 0 to back")
+
+        try:
+            index_input = int(input("\nChoose team to delete: ").strip())
+        except ValueError:
+            print("\n❌ Invalid input! Please enter a valid number.\n")
+            continue
+
+        if index_input == 0:
+            break
+        elif not (1 <= index_input <= len(data_teams)):
+            print("\n❌ Invalid selection. Please choose a number from the list!\n")
+        else:
+            # Get actual team ID and name
+            team_id, team_name = data_teams[index_input - 1]
+
+            # Delete team from database
+            connector.cur.execute(query_delete_team, (team_id,))
+            connector.commit()
+
+            print(f"\n✅ Team '{team_name}' deleted successfully!")
+            break
