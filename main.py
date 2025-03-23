@@ -19,8 +19,9 @@ def player_menu():
     options = {
         "1": {"label": "Add New Players", "action": add_players},
         "2": {"label": "Leaderboard", "action": view_leaderboard},
-        "3": {"label": "Rename Player", "action": rename_player},
-        "4": {"label": "Delete Player", "action": delete_player},
+        "3": {"label": "Search Players", "action": search_players},
+        "4": {"label": "Rename Player", "action": rename_player},
+        "5": {"label": "Delete Player", "action": delete_player},
         "0": {"label": "Back"}
     }
     while True:
@@ -44,10 +45,11 @@ def match_menu():
 def team_menu():
     options = {
         "1": {"label": "Create New Team", "action": create_team},
-        "2": {"label": "Assign Player to Team", "action": assign_player_to_team},
+        "2": {"label": "Assign Player", "action": assign_player},
         "3": {"label": "View Team", "action": view_team},
-        "4": {"label": "Rename Team", "action": rename_team},
-        "5": {"label": "Delete Team", "action": delete_team},
+        "4": {"label": "Search Teams", "action": search_teams},
+        "5": {"label": "Rename Team", "action": rename_team},
+        "6": {"label": "Delete Team", "action": delete_team},
         "0": {"label": "Back"}
     }
     while True:

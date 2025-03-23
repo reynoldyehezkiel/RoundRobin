@@ -30,6 +30,15 @@ def get_team_players(tid):
     connector.cur.execute(query, (tid,))
     return connector.cur.fetchall()
 
+def get_teams_by_search(name):
+    query = """
+        SELECT id, name
+        FROM teams
+        WHERE name LIKE %s
+    """
+    connector.cur.execute(query, (f"%{name}%",))
+    return connector.cur.fetchall()
+
 query_insert_team = """
     INSERT INTO teams
         (id, name)
@@ -54,11 +63,25 @@ query_rename_team = """
     WHERE id = %s;
 """
 
-def print_teams(data):
-    print("-" * 15)
-    print(f"{'No':<3} {'Team':<20}")
+def print_teams(data, print_type=None):
+    # Print Header
     print("-" * 15)
 
-    for idx, (t_id, name) in enumerate(data, start=1):
-        print(f"{idx:<4}{name:<21}")
+    if print_type == "search":
+        print(f"{'Team':<20}")
+    else:
+        print(f"{'No':<3} {'Team':<20}")
+
+    print("-" * 15)
+
+    # Print Body
+
+    if print_type == "search":
+        for idx, (t_id, name) in enumerate(data, start=1):
+            print(f"{name:<21}")
+    else:
+        for idx, (t_id, name) in enumerate(data, start=1):
+            print(f"{idx:<4}{name:<21}")
+
+
     print("-" * 15)

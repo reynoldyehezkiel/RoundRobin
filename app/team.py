@@ -28,7 +28,7 @@ def create_team():
         connector.commit()
         print(f"\n✅ Finished adding {name_input}.")
 
-def assign_player_to_team():
+def assign_player():
     # Get existing players & teams from the database
     data_players = get_all_players_data()
     data_teams = get_all_teams_data()
@@ -111,7 +111,9 @@ def view_team():
     except ValueError:
         print("\n❌ Invalid input! Please enter a valid number.")
 
-    if not (1 <= team_input <= len(data_teams)):
+    if team_input == 0:
+        return
+    elif not (1 <= team_input <= len(data_teams)):
         print("\n❌ Invalid selection. Please choose a number from the list!\n")
     else:
         # Get actual team ID and name
@@ -124,6 +126,17 @@ def view_team():
             print_players(data_team_players, "team", team_name)
         else:
             print(f'❌ No players are assigned in team {team_name}!')
+
+def search_teams():
+    print()
+    search_input = input("Enter team name to search: ").strip()
+    team_name = get_teams_by_search(search_input)
+    print()
+
+    if team_name:
+        print_teams(team_name, "search")
+    else:
+        print("No teams found.")
 
 def rename_team():
     # Get existing teams from the database
