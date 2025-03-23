@@ -4,7 +4,8 @@ from query.team import *
 def create_team():
     # Get existing teams from the database
     data_teams = get_all_teams_data()
-    existing_teams = set(name for _, name in data_teams) if data_teams else set()
+    existing_teams = set(name for _, name, _ in data_teams) if data_teams else set()
+    existing_category = list(set(category for _, _, category in data_teams if category != "Uncategorized")) if data_teams else set()
 
     # Check player data before create new team
     data_players = get_all_players_data()
@@ -22,11 +23,38 @@ def create_team():
     if name_input in existing_teams:
         print(f"\n⚠️ Team '{name_input}' already exists! Please choose a different name.\n")
 
-    # Commit new teams to the database
     elif name_input not in existing_teams:
-        connector.cur.execute(query_insert_team, (None,name_input))
-        connector.commit()
-        print(f"\n✅ Finished adding {name_input}.")
+        # Choose team category
+        print()
+        print_teams(existing_category, "category")
+
+        print("\nPress Enter to choose default category")
+        try:
+            category_input = int(input("Choose category: ").strip() or 0)  # Default to 0 if empty
+        except ValueError:
+            category_input = 0
+
+        # Commit new teams to the database
+        if not (0 <= category_input <= len(existing_category)+1):
+            print("\n❌ Invalid selection. Please choose a number from the list!")
+
+        elif category_input:
+            if category_input == len(existing_category)+1:
+                # Create new category
+                category_name = input("Enter a category name: ").strip()
+            else:
+                # Select existing category
+                category_name = existing_category[category_input - 1]
+            connector.cur.execute(query_insert_team, (None, name_input, category_name))
+            connector.commit()
+            print(f"\n✅ Finished adding {name_input} as {category_name}.")
+
+        # Default category
+        else:
+            connector.cur.execute(query_insert_team_no_category, (None, name_input))
+            connector.commit()
+            print(f"\n✅ Finished adding {name_input} as Uncategorized.")
+
 
 def assign_player():
     # Get existing players & teams from the database
@@ -117,7 +145,7 @@ def view_team():
         print("\n❌ Invalid selection. Please choose a number from the list!\n")
     else:
         # Get actual team ID and name
-        team_id, team_name = data_teams[team_input - 1]
+        team_id, team_name, team_category = data_teams[team_input - 1]
 
         # Get players from selected team
         print()
@@ -141,7 +169,8 @@ def search_teams():
 def rename_team():
     # Get existing teams from the database
     data_teams = get_all_teams_data()
-    existing_teams = set(name for _, name in data_teams) if data_teams else set()
+    print(data_teams)
+    existing_teams = set(name for _, name, _ in data_teams) if data_teams else set()
 
     if not data_teams:
         print("\n⚠️ No teams available. Please add teams first!")
@@ -164,9 +193,9 @@ def rename_team():
             print("\n❌ Invalid selection. Please choose a number from the list!")
         else:
             # Get actual team ID and name
-            team_id, team_name = data_teams[index_input - 1]
+            team_id, team_name, team_category = data_teams[index_input - 1]
 
-            print(f"\n✅ Team '{team_name}' selected!")
+            print(f"\nTeam '{team_name}' selected!")
             print("⚠️ Type 0 to back")
 
             while True:
@@ -221,7 +250,7 @@ def delete_team():
             print("\n❌ Invalid selection. Please choose a number from the list!\n")
         else:
             # Get actual team ID and name
-            team_id, team_name = data_teams[index_input - 1]
+            team_id, team_name, team_category = data_teams[index_input - 1]
 
             # Delete team from database
             connector.cur.execute(query_delete_team, (team_id,))
@@ -229,3 +258,11 @@ def delete_team():
 
             print(f"\n✅ Team '{team_name}' deleted successfully!")
             break
+
+"""
+TO DO
+
+- [Create New Team]
+    - Choose Category or skip
+
+"""

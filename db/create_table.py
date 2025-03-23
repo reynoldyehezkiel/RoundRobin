@@ -2,16 +2,17 @@ from connection import *
 
 # create statement for players
 teams_create = """
-	CREATE TABLE teams
+	CREATE TABLE IF NOT EXISTS teams
 	(
 		id INT AUTO_INCREMENT PRIMARY KEY,
-		name VARCHAR(255) NOT NULL
+		name VARCHAR(255) NOT NULL,
+		category VARCHAR(100) DEFAULT 'Uncategorized'
 	)
 """
 
 # create statement for players
 players_create = """
-	CREATE TABLE players
+	CREATE TABLE IF NOT EXISTS players
 	(
     	id INT AUTO_INCREMENT PRIMARY KEY,
 		name VARCHAR(255) NOT NULL,
@@ -20,7 +21,7 @@ players_create = """
 """
 
 player_teams_create = """
-	CREATE TABLE player_teams
+	CREATE TABLE IF NOT EXISTS player_teams
 	(
 		player_id INT NOT NULL,
 		team_id INT NOT NULL,
@@ -32,7 +33,7 @@ player_teams_create = """
 
 # create statement for matches
 matches_create = """
-	CREATE TABLE matches
+	CREATE TABLE IF NOT EXISTS matches
 	(
 		id INT AUTO_INCREMENT PRIMARY KEY,
 		player1_id INT NOT NULL,
@@ -74,8 +75,6 @@ connector.cur.execute(matches_create)
 connector.cur.execute("desc matches")
 for i in connector.cur:
 	print(i)
-
-
 
 # finally closing the database connection
 connector.close()

@@ -2,14 +2,14 @@ from db.connection import *
 
 def get_all_teams_data():
     query = """
-        SELECT id, name FROM teams;
+        SELECT id, name, category FROM teams;
     """
     connector.cur.execute(query)
     return connector.cur.fetchall()
 
 def get_available_teams(pid):
     query = """
-        SELECT t.id, t.name
+        SELECT t.id, t.name, t.category
         FROM teams t
         WHERE NOT EXISTS (
             SELECT 1 
@@ -41,6 +41,13 @@ def get_teams_by_search(name):
 
 query_insert_team = """
     INSERT INTO teams
+        (id, name, category)
+    VALUES
+        (%s, %s, %s)
+"""
+
+query_insert_team_no_category = """
+    INSERT INTO teams
         (id, name)
     VALUES
         (%s, %s)
@@ -64,24 +71,42 @@ query_rename_team = """
 """
 
 def print_teams(data, print_type=None):
-    # Print Header
-    print("-" * 15)
-
     if print_type == "search":
+        # Print Header
+        print("-" * 15)
         print(f"{'Team':<20}")
-    else:
-        print(f"{'No':<3} {'Team':<20}")
+        print("-" * 15)
 
-    print("-" * 15)
-
-    # Print Body
-
-    if print_type == "search":
+        # Print Body
         for idx, (t_id, name) in enumerate(data, start=1):
             print(f"{name:<21}")
+
+        print("-" * 15)
+
+    elif print_type == "category":
+        # Print Header
+        print("-" * 15)
+        print(f"{'No':<4}{'Category':<20}")
+        print("-" * 15)
+
+        # Print Body
+        for idx, (category) in enumerate(data, start=1):
+            print(f"{idx:<4}{category:<15}")
+
+        print("-" * 15)
+
+        print(f"{len(data)+1:<4}Create New")
+
+        print("-" * 15)
+
     else:
-        for idx, (t_id, name) in enumerate(data, start=1):
-            print(f"{idx:<4}{name:<21}")
+        # Print Header
+        print("-" * 35)
+        print(f"{'No':<4}{'Team':<15}{'Category'}")
+        print("-" * 35)
 
+        # Print Body
+        for idx, (t_id, name, category) in enumerate(data, start=1):
+            print(f"{idx:<4}{name:<15}{category}")
 
-    print("-" * 15)
+        print("-" * 35)
