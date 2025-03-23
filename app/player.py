@@ -52,22 +52,18 @@ def retrieve_leaderboard():
         print("\n⚠️ No players available. Please add players first!")
         return
 
-    # Print the leaderboard header
-    print("\n========= Leaderboard =========")
-    print("-" * 31)
-    print(f"{'Rank':<5} {'Player':<19} {'Wins':>5}")
-    print("-" * 31)
+    print_players(data_players, "leaderboard")
 
-    rank = 0
-    prev_win = None
+def search_players():
+    print()
+    search_input = input("Enter player name to search: ").strip()
+    player_name = get_players_by_search(search_input)
+    print()
 
-    for idx, (pid, name, total_win) in enumerate(data_players, start=1):
-        if total_win != prev_win:
-            rank = idx  # Update rank only if the number of wins is different
-        prev_win = total_win
-        print(f"{rank:<5} {name:<16} {total_win:>5}")
-
-    print("-" * 31)
+    if player_name:
+        print_players(player_name, "search")
+    else:
+        print("No players found.")
 
 def rename_player():
     # Get existing players from the database
