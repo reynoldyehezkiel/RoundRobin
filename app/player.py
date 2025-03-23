@@ -1,6 +1,7 @@
 from app.match import generate_matches
 from query.player import *
 from query.match import *
+from query.team import *
 
 def add_players():
     # Get existing players from the database
@@ -10,12 +11,12 @@ def add_players():
     print("\n=== Add New Players ===")
     print("Please enter player names one by one.")
     print("⚠️ Press Enter to finish adding players.")
-    print("⚠️ Type 0 to cancel\n")
+    print("⚠️ Type 0 to back\n")
 
     new_players = []  # List to store newly added players
 
     while True:
-        # Asking for player name with instructions
+        # Asking for player name
         name_input = input("Enter a player name: ").strip()
 
         # If the user presses enter, commit the database changes
@@ -34,7 +35,6 @@ def add_players():
 
         # Cancel operation
         elif name_input == "0":
-            print("\n⚠️ No players were added.")
             break
 
         # Validate player name
@@ -45,7 +45,7 @@ def add_players():
             new_players.append((None, name_input))
             existing_players.add(name_input)
 
-def retrieve_leaderboard():
+def view_leaderboard():
     data_players = get_leaderboard()
 
     if not data_players:
@@ -77,7 +77,7 @@ def rename_player():
     while True:
         print("\n=== Rename Player ===")
         print_players(data_players)
-        print("⚠️ Type 0 to cancel")
+        print("⚠️ Type 0 to back")
 
         try:
             index_input = int(input("\nChoose player to rename: ").strip())
@@ -86,7 +86,6 @@ def rename_player():
             continue
 
         if index_input == 0:
-            print("\n⚠️ No players were renamed.")
             break
         elif not (1 <= index_input <= len(data_players)):
             print("\n❌ Invalid selection. Please choose a number from the list!")
@@ -134,7 +133,7 @@ def delete_player():
     while True:
         print("\n=== Delete Player ===")
         print_players(data_players)
-        print("⚠️ Type 0 to cancel")
+        print("⚠️ Type 0 to back")
 
         try:
             index_input = int(input("\nChoose player to delete: ").strip())
@@ -143,7 +142,6 @@ def delete_player():
             continue
 
         if index_input == 0:
-            print("\n⚠️ No players were deleted.")
             break
         elif not (1 <= index_input <= len(data_players)):
             print("\n❌ Invalid selection. Please choose a number from the list!\n")
