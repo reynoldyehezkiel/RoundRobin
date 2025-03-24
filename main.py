@@ -5,7 +5,7 @@ from db.connection import *
 
 def display_menu(title, options):
     while True:  # Keep showing menu until valid input
-        print(f"\n=== {title} ===")
+        print(f"\n==== {title} ====")
         for key, value in options.items():
             print(f"{key}. {value['label']}")
         choice = input("Select an option: ").strip()
@@ -44,7 +44,7 @@ def match_menu():
 
 def team_menu():
     options = {
-        "1": {"label": "Create New Team 🛠️ [Update WIP]", "action": create_team},
+        "1": {"label": "Create New Team", "action": create_team},
         "2": {"label": "Assign Player", "action": assign_player},
         "3": {"label": "View Team", "action": view_team},
         "4": {"label": "Search Teams", "action": search_teams},

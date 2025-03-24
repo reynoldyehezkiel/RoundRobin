@@ -29,9 +29,8 @@ def create_team():
             print()
             print_teams(existing_category, "category")
 
-            print("\nPress Enter to choose default category")
             try:
-                category_input = int(input("Choose category: ").strip() or 0)  # Default to 0 if empty
+                category_input = int(input("\nChoose category: ").strip() or 0)  # Default to 0 if empty
             except ValueError:
                 print("\n❌ Invalid input! Please enter a valid number.\n")
                 continue
@@ -109,8 +108,8 @@ def assign_player():
                     print("\n❌ Invalid selection. Please choose a number from the list!\n")
                     continue
                 else:
-                    # Get actual team ID and name
-                    team_id, team_name = available_teams[team_input - 1]
+                    # Get actual team data
+                    team_id, team_name, team_category = available_teams[team_input - 1]
 
                     connector.cur.execute(query_insert_player_team, (player_id, team_id))
                     connector.commit()

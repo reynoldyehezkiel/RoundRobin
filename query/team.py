@@ -85,19 +85,23 @@ def print_teams(data, print_type=None):
 
     elif print_type == "category":
         # Print Header
-        print("-" * 15)
-        print(f"{'No':<4}{'Category':<20}")
-        print("-" * 15)
+        if data:
+            print("-" * 15)
+            print(f"{'No':<4}{'Category':<20}")
+            print("-" * 15)
 
-        # Print Body
-        for idx, (category) in enumerate(data, start=1):
-            print(f"{idx:<4}{category:<15}")
+            # Print Body
+            for idx, (category) in enumerate(data, start=1):
+                print(f"{idx:<4}{category:<15}")
 
-        print("-" * 15)
+            print("-" * 15)
+            print(f"{len(data)+1:<4}Create New")
+            print("-" * 15)
+        else:
+            print("-" * 15)
+            print(f"{"1":<4}Create New")
+            print("-" * 15)
 
-        print(f"{len(data)+1:<4}Create New")
-
-        print("-" * 15)
 
     else:
         # Print Header
