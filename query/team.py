@@ -32,7 +32,7 @@ def get_team_players(tid):
 
 def get_teams_by_search(name):
     query = """
-        SELECT id, name
+        SELECT id, name, category
         FROM teams
         WHERE name LIKE %s
     """
@@ -73,15 +73,15 @@ query_rename_team = """
 def print_teams(data, print_type=None):
     if print_type == "search":
         # Print Header
-        print("-" * 15)
-        print(f"{'Team':<20}")
-        print("-" * 15)
+        print("-" * 31)
+        print(f"{'Team':<15}{'Category'}")
+        print("-" * 31)
 
         # Print Body
-        for idx, (t_id, name) in enumerate(data, start=1):
-            print(f"{name:<21}")
+        for idx, (t_id, name, category) in enumerate(data, start=1):
+            print(f"{name:<15}{category}")
 
-        print("-" * 15)
+        print("-" * 31)
 
     elif print_type == "category":
         # Print Header
