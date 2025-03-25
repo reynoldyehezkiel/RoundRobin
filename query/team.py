@@ -20,14 +20,14 @@ def get_available_teams(pid):
     connector.cur.execute(query, (pid,))
     return connector.cur.fetchall()
 
-def get_team_players(tid):
+def get_team_players(pid):
     query = """
         SELECT t.id, t.name, t.category
         FROM teams t
         LEFT JOIN player_teams pt ON t.id = pt.team_id
         WHERE pt.player_id = (%s)
     """
-    connector.cur.execute(query, (tid,))
+    connector.cur.execute(query, (pid,))
     return connector.cur.fetchall()
 
 def get_teams_by_search(name):

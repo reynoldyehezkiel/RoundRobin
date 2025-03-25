@@ -6,8 +6,8 @@ class Connection:
             host="localhost",
             user="root",
             passwd="",
-            # database="roundrobin"
-            database="roundrobintest"
+            database="roundrobin"
+            # database="roundrobintest"
         )
         self.cur = self.conn.cursor()
 

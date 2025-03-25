@@ -40,14 +40,14 @@ def get_player_by_finished_match():
     connector.cur.execute(query)
     return connector.cur.fetchall()
 
-def get_player_teams(pid):
+def get_player_teams(tid):
     query = """
         SELECT p.id, p.name
         FROM players p
         LEFT JOIN player_teams pt ON p.id = pt.player_id
         WHERE pt.team_id = (%s)
     """
-    connector.cur.execute(query, (pid,))
+    connector.cur.execute(query, (tid,))
     return connector.cur.fetchall()
 
 def get_players_by_search(name):

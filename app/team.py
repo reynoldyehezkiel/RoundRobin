@@ -160,7 +160,7 @@ def view_teams():
 
         # Get players from selected team
         print()
-        data_team_players = get_team_players(team_id)
+        data_team_players = get_player_teams(team_id)
         if data_team_players:
             print_players(data_team_players, "team", team_name)
         else:
