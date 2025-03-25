@@ -14,43 +14,57 @@ def create_team():
         return
 
     print("\n=== Create New Team ===")
-    print("Please enter team name.")
-    print("⚠️ Type 0 to back\n")
 
-    name_input = input("Enter a team name: ").strip()
+    while True:
+        print("Please enter team name.")
+        print("⚠️ Type 0 to back\n")
 
-    # Validate team name
-    if name_input in existing_teams:
-        print(f"\n⚠️ Team '{name_input}' already exists! Please choose a different name.\n")
+        try:
+            name_input = input("Enter a new team name: ").strip()
+        except ValueError:
+            print("\n❌ Invalid input! Please enter a valid name.\n")
+            continue
 
-    elif name_input not in existing_teams:
-        # Choose team category
-        while True:
-            print()
-            print_teams(existing_category, "category")
+        if name_input == "0":
+            break
 
-            try:
-                category_input = int(input("\nChoose category: ").strip() or 0)  # Default to 0 if empty
-            except ValueError:
-                print("\n❌ Invalid input! Please enter a valid number.\n")
-                continue
+        # Validate team name
+        elif name_input in existing_teams:
+            print(f"\n⚠️ Team '{name_input}' already exists! Please choose a different name.\n")
 
-            # Commit new teams to the database
-            if not (1 <= category_input <= len(existing_category)+1):
-                print("\n❌ Invalid selection. Please choose a number from the list!")
-                continue
+        elif name_input not in existing_teams:
+            # Choose team category
+            while True:
+                print()
+                print_teams(existing_category, "category")
+                print("⚠️ Type 0 to cancel\n")
 
-            elif category_input:
-                if category_input == len(existing_category)+1:
-                    # Create new category
-                    category_name = input("Enter a category name: ").strip()
-                else:
-                    # Select existing category
-                    category_name = existing_category[category_input - 1]
-                connector.cur.execute(query_insert_team, (None, name_input, category_name))
-                connector.commit()
-                print(f"\n✅ Finished adding {name_input} as {category_name}.")
-                return
+                try:
+                    category_input = int(input("Choose category: ").strip())
+                except ValueError:
+                    print("\n❌ Invalid input! Please enter a valid number.\n")
+                    continue
+
+                if category_input == 0:
+                    print()
+                    break
+
+                elif not (1 <= category_input <= len(existing_category)+1):
+                    print("\n❌ Invalid selection. Please choose a number from the list!")
+                    continue
+
+                # Commit new teams to the database
+                elif category_input:
+                    if category_input == len(existing_category)+1:
+                        # Create new category
+                        category_name = input("Enter a category name: ").strip()
+                    else:
+                        # Select existing category
+                        category_name = existing_category[category_input - 1]
+                    connector.cur.execute(query_insert_team, (None, name_input, category_name))
+                    connector.commit()
+                    print(f"\n✅ Finished adding {name_input} as {category_name}.")
+                    return
 
 
 def assign_player():
