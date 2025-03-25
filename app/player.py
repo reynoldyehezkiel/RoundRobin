@@ -54,6 +54,42 @@ def view_leaderboard():
 
     print_players(data_players, "leaderboard")
 
+def view_players():
+    # Get existing players from the database
+    data_players = get_all_players_data()
+    player_input = 0
+
+    if not data_players:
+        print("\n⚠️ No players available. Please create player first!")
+        return
+
+    ## Player section
+    print("\n==== Player List ====")
+    print_players(data_players)
+    print("⚠️ Type 0 to back")
+
+    # Choose player
+    try:
+        player_input = int(input(f"\nChoose Player: ").strip())
+    except ValueError:
+        print("\n❌ Invalid input! Please enter a valid number.")
+
+    if player_input == 0:
+        return
+    elif not (1 <= player_input <= len(data_players)):
+        print("\n❌ Invalid selection. Please choose a number from the list!\n")
+    else:
+        # Get actual player ID and name
+        player_id, player_name = data_players[player_input - 1]
+
+        # Get teams from selected player
+        print()
+        data_player_teams = get_team_players(player_id)
+        if data_player_teams:
+            print_teams(data_player_teams, "player", player_name)
+        else:
+            print(f'❌ No teams are assigned in player {player_name}!')
+
 def search_players():
     print()
     search_input = input("Enter player name to search: ").strip()

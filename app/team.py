@@ -130,7 +130,7 @@ def assign_player():
                     print(f"\n✅ Player '{player_name}' assigned to '{team_name}' successfully!.")
                     return
 
-def view_team():
+def view_teams():
     # Get existing teams from the database
     data_teams = get_all_teams_data()
     team_input = 0

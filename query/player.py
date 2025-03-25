@@ -40,6 +40,16 @@ def get_player_by_finished_match():
     connector.cur.execute(query)
     return connector.cur.fetchall()
 
+def get_player_teams(pid):
+    query = """
+        SELECT p.id, p.name
+        FROM players p
+        LEFT JOIN player_teams pt ON p.id = pt.player_id
+        WHERE pt.team_id = (%s)
+    """
+    connector.cur.execute(query, (pid,))
+    return connector.cur.fetchall()
+
 def get_players_by_search(name):
     query = """
         SELECT id, name, total_win
@@ -108,22 +118,3 @@ def print_players(data, print_type=None, team_name=None):
                 print(f"{idx:<4}{name:<21}")
 
         print("-" * 20)
-
-# def print_players(data, print_type=None, team_name=None):
-#     print("-" * 20)
-#
-#     if print_type == "team":
-#         print(f"{team_name.center(20)}")
-#     else:
-#         print(f"{'No':<3} {'Player':<20}")
-#
-#     print("-" * 20)
-#
-#     if print_type == "rematch":
-#         for idx, (match_id, p_id, name) in enumerate(data, start=1):
-#             print(f"{idx:<4}{name:<21}")
-#     else:
-#         for idx, (p_id, name) in enumerate(data, start=1):
-#             print(f"{idx:<4}{name:<21}")
-#
-#     print("-" * 20)

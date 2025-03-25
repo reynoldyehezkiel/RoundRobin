@@ -22,10 +22,10 @@ def get_available_teams(pid):
 
 def get_team_players(tid):
     query = """
-        SELECT p.id, p.name
-        FROM players p
-        LEFT JOIN player_teams pt ON p.id = pt.player_id
-        WHERE pt.team_id = (%s)
+        SELECT t.id, t.name, t.category
+        FROM teams t
+        LEFT JOIN player_teams pt ON t.id = pt.team_id
+        WHERE pt.player_id = (%s)
     """
     connector.cur.execute(query, (tid,))
     return connector.cur.fetchall()
@@ -70,7 +70,7 @@ query_rename_team = """
     WHERE id = %s;
 """
 
-def print_teams(data, print_type=None):
+def print_teams(data, print_type=None, player_name=None):
     if print_type == "search":
         # Print Header
         print("-" * 31)
@@ -102,11 +102,15 @@ def print_teams(data, print_type=None):
             print(f"{"1":<4}Create New")
             print("-" * 15)
 
-
     else:
         # Print Header
         print("-" * 35)
-        print(f"{'No':<4}{'Team':<15}{'Category'}")
+
+        if print_type == "player":
+            print(f"{player_name.center(35)}")
+        else:
+            print(f"{'No':<4}{'Team':<15}{'Category'}")
+
         print("-" * 35)
 
         # Print Body
